@@ -1,21 +1,13 @@
-module Minder
-  class PomodoroBreak
-    attr_accessor :minutes
+require 'minder/interval'
 
+module Minder
+  class PomodoroBreak < Interval
     def initialize(minutes: DEFAULT_WORK_PERIOD)
-      self.minutes = minutes
+      super
     end
 
-    def run
-      timer = Minder::Timer.new(seconds: minutes * 60)
-      timer.start!
-      puts "Break period"
-      puts ""
-      while !timer.completed?
-        timer.tick
-        $stdout.flush
-        print "#{timer}\r"
-      end
+    def message
+      "Break period"
     end
   end
 end

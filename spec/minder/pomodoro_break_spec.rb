@@ -1,6 +1,6 @@
-require 'minder/pomodoro'
+require 'minder/pomodoro_break'
 
-describe Minder::Pomodoro do
+describe Minder::PomodoroBreak do
   describe '#run' do
     let(:timer) { instance_spy(Minder::Timer) }
 
@@ -17,7 +17,7 @@ describe Minder::Pomodoro do
 
       pomodoro.run
 
-      expect(pomodoro).to have_received(:puts).with('Work period')
+      expect(pomodoro).to have_received(:puts).with('Break period')
       expect(timer).to have_received(:start!)
       expect(timer).to have_received(:tick).at_least(:once)
     end
