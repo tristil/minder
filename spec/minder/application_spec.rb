@@ -28,16 +28,18 @@ describe Minder::Application do
         short_break_duration: 'short_break_duration',
         long_break_duration: 'long_break_duration')
       application = Minder::Application.new(config: config)
-      pomodoro_runner = instance_spy(Minder::PomodoroRunner)
+      pomodoro_runner = instance_double(Minder::PomodoroRunner)
       allow(Minder::PomodoroRunner).to receive(:new)
         .with(work_duration: 'work_duration',
               short_break_duration: 'short_break_duration',
               long_break_duration: 'long_break_duration')
         .and_return(pomodoro_runner)
+      allow(application).to receive(:system).with('clear')
+      allow(pomodoro_runner).to receive(:do_pomodoro)
 
       application.run
 
-      expect(pomodoro_runner).to have_received(:run)
+      expect(pomodoro_runner).to have_received(:do_pomodoro)
     end
   end
 end
