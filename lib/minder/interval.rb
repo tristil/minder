@@ -14,7 +14,15 @@ module Minder
       timer.start!
     end
 
+    def complete!
+      @status = :completed
+    end
+
     def completed?
+      @status == :completed
+    end
+
+    def elapsed?
       timer.completed?
     end
 

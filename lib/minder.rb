@@ -1,6 +1,7 @@
 module Minder
   DEFAULT_WORK_PERIOD = 25 * 60
   CONFIG_LOCATION = ENV['HOME'] + '/.minder.json'
+  ASSETS_LOCATION = File.expand_path(File.dirname(__FILE__) + '/../assets')
 
   def self.formatted_time(seconds)
     minutes = (seconds / 60).to_i

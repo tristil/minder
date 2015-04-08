@@ -30,10 +30,14 @@ module Minder
           if char_code == 32
             new_action = pomodoro_runner.advance_action
             new_action.start!
+            system("afplay #{ASSETS_LOCATION}/start.wav")
             print "                                \r"
           else
             print "Press space to start next period\r"
           end
+        elsif current_action.elapsed?
+          system("afplay #{ASSETS_LOCATION}/done.wav")
+          current_action.complete!
         else
           update_screen(current_action)
         end
