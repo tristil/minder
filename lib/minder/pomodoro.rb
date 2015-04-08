@@ -8,7 +8,7 @@ module Minder
       super
     end
 
-    def message
+    def preamble
       "Work period"
     end
   end

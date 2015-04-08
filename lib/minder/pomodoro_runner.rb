@@ -7,7 +7,8 @@ module Minder
                   :short_break_duration,
                   :long_break_duration
 
-    attr_reader :action_count
+    attr_reader :action_count,
+                :current_action
 
     def initialize(**options)
       self.work_duration = options.fetch(:work_duration)
@@ -16,13 +17,13 @@ module Minder
       @action_count = 0
     end
 
-    def next_action
+    def advance_action
       @action_count += 1
 
       if action_count.odd?
-        Pomodoro.new(minutes: work_duration)
+        @current_action = Pomodoro.new(minutes: work_duration)
       else
-        PomodoroBreak.new(minutes: break_duration)
+        @current_action = PomodoroBreak.new(minutes: break_duration)
       end
     end
 

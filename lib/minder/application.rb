@@ -18,20 +18,31 @@ module Minder
       system('clear')
       current_action = nil
 
-      loop do
-        puts 'Press space to start next period'
-        wait_for_char(' ')
+      current_action = pomodoro_runner.advance_action
+      current_action.start!
 
-        next_pomodoro_action
+      loop do
+        char_code = get_keypress
+        exit if char_code == 3
+        current_action = pomodoro_runner.current_action
+
+        if current_action.completed?
+          if char_code == 32
+            new_action = pomodoro_runner.advance_action
+            new_action.start!
+            print "                                \r"
+          else
+            print "Press space to start next period\r"
+          end
+        else
+          update_screen(current_action)
+        end
       end
     end
 
-    def next_pomodoro_action
-      action = pomodoro_runner.next_action
-      action.run
-
-      puts ''
-      puts ''
+    def update_screen(action)
+      print "#{action.message}\r"
+      STDOUT.flush
     end
 
     def pomodoro_runner
@@ -41,13 +52,11 @@ module Minder
         long_break_duration: config.long_break_duration)
     end
 
-    def wait_for_char(expected_char)
-      loop do
-        system("stty raw -echo") #=> Raw mode, no echo
-        char = STDIN.getc
-        system("stty -raw echo") #=> Reset terminal mode
-        break if char == expected_char
-      end
+    def get_keypress
+      system("stty raw -echo") #=> Raw mode, no echo
+      char_code = (STDIN.read_nonblock(1).ord rescue nil)
+      system("stty -raw echo") #=> Reset terminal mode
+      char_code
     end
   end
 end

@@ -6,7 +6,7 @@ module Minder
       super
     end
 
-    def message
+    def preamble
       "Break period"
     end
   end

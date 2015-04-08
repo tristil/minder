@@ -21,25 +21,35 @@ describe Minder::Application do
   end
 
   describe '#run' do
-    it 'runs the application' do
-      config = instance_spy(
+    let(:config) do
+      instance_spy(
         'Minder::Config',
         work_duration: 'work_duration',
         short_break_duration: 'short_break_duration',
         long_break_duration: 'long_break_duration')
-      application = Minder::Application.new(config: config)
+    end
+    let(:application) { Minder::Application.new(config: config) }
+
+    it 'runs the application' do
       pomodoro_runner = instance_double(Minder::PomodoroRunner)
       allow(Minder::PomodoroRunner).to receive(:new)
         .with(work_duration: 'work_duration',
               short_break_duration: 'short_break_duration',
               long_break_duration: 'long_break_duration')
         .and_return(pomodoro_runner)
-      allow(application).to receive(:system).with('clear')
-      allow(pomodoro_runner).to receive(:do_pomodoro)
+      allow(application).to receive(:system)
+      allow(application).to receive(:puts)
+      allow(STDIN).to receive(:getc).and_return(' ')
+      interval = instance_double(Minder::Interval)
+      allow(pomodoro_runner).to receive(:next_action).and_return(interval)
 
       application.run
 
-      expect(pomodoro_runner).to have_received(:do_pomodoro)
+      expect(application).to have_received(:system).with('stty raw -echo')
+      expect(application).to have_received(:system).with('stty -raw echo')
+      expect(STDIN).to have_received(:getc).with('stty -raw echo')
+      expect(pomodoro_runner).to have_received(:next_action)
+      expect(interval).to receive(:)
     end
   end
 end

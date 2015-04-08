@@ -2,22 +2,24 @@ require 'minder/timer'
 
 module Minder
   class Interval
-    attr_accessor :minutes
+    attr_accessor :minutes,
+                  :timer
 
     def initialize(minutes: nil)
       self.minutes = minutes
+      self.timer = Minder::Timer.new(seconds: minutes * 60)
     end
 
-    def run
-      timer = Minder::Timer.new(seconds: minutes * 60)
+    def start!
       timer.start!
-      puts message
-      puts ""
-      while !timer.completed?
-        timer.tick
-        $stdout.flush
-        print "#{timer}\r"
-      end
+    end
+
+    def completed?
+      timer.completed?
+    end
+
+    def message
+      timer.to_s
     end
   end
 end

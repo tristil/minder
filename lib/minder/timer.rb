@@ -14,17 +14,13 @@ module Minder
     end
 
     def completed?
-      elapsed_time.to_i > seconds
+      elapsed_time.to_i >= seconds
     end
 
     def elapsed_time
       return 0 unless start_time
 
       (Time.now - start_time)
-    end
-
-    def tick
-      sleep 1
     end
 
     def to_s
