@@ -11,12 +11,12 @@ module Minder
     end
 
     def start!
-      spawn("afplay #{ASSETS_LOCATION}/start.wav")
+      Minder.play_sound('start.wav')
       timer.start!
     end
 
     def complete!
-      spawn("afplay #{ASSETS_LOCATION}/done.wav")
+      Minder.play_sound('done.wav')
       @status = :completed
     end
 

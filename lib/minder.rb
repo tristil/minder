@@ -9,4 +9,15 @@ module Minder
     seconds = (seconds % 60).round
     "#{'%02d' % minutes}:#{'%02d' % seconds}"
   end
+
+  def self.play_sound(name)
+    command = is_linux? ? 'aplay' : 'afplay'
+    spawn("#{command} #{ASSETS_LOCATION}/#{name}",
+          out: '/dev/null',
+          err: '/dev/null')
+  end
+
+  def self.is_linux?
+    RUBY_PLATFORM =~ /linux/
+  end
 end
