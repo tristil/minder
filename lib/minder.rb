@@ -1,5 +1,6 @@
 module Minder
-  DEFAULT_WORK_PERIOD = 25 * 60
+  DEFAULT_WORK_PERIOD = 25
+  DEFAULT_BREAK_PERIOD = 5
   CONFIG_LOCATION = ENV['HOME'] + '/.minder.json'
   ASSETS_LOCATION = File.expand_path(File.dirname(__FILE__) + '/../assets')
 

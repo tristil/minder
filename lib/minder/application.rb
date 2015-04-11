@@ -22,19 +22,19 @@ module Minder
       Curses.timeout = 0
 
       loop do
-        char_code = get_keycode
+        pomodoro_runner.tick
 
+        char_code = get_keycode
         event = event_from_keycode(char_code)
 
+        resolution = handle_event(event)
+
         current_action = pomodoro_runner.current_action
+        update_screen(current_action)
 
-        resolution = resolve_action(event, current_action)
-
-        public_send(resolution, current_action)
-
-        Curses.setpos(3, 0)
+        Curses.setpos(5, 0)
         Curses.addstr(' ' * 10)
-        Curses.setpos(3, 0)
+        Curses.setpos(5, 0)
         Curses.refresh
       end
       Curses.close_screen
@@ -42,7 +42,9 @@ module Minder
 
     def update_screen(action)
       Curses.setpos(0,0)
-      Curses.addstr(action.message)
+      Curses.addstr(action.title + (' ' * 30))
+      Curses.setpos(3,0)
+      Curses.addstr(action.message + (' ' * 30))
     end
 
     def pomodoro_runner
@@ -57,41 +59,9 @@ module Minder
       char && char.ord
     end
 
-    def end_interval(current_action)
-      system("afplay #{ASSETS_LOCATION}/done.wav")
-      current_action.complete!
-      update_screen(current_action)
-    end
-
-    def start_interval(current_action)
-      new_action = pomodoro_runner.advance_action
-      new_action.start!
-      system("afplay #{ASSETS_LOCATION}/start.wav")
-      update_screen(new_action)
-    end
-
-    def running(current_action)
-      update_screen(current_action)
-    end
-
-    def waiting(current_action)
-      Curses.setpos(0,0)
-      Curses.addstr('Press space to start next period')
-    end
-
-    def resolve_action(event, current_action)
-      return :start_interval unless current_action
-
-      if current_action.completed?
-        if event == :continue
-          :start_interval
-        else
-          :waiting
-        end
-      elsif current_action.elapsed?
-        :end_interval
-      else
-        :running
+    def handle_event(event)
+      if event == :continue
+        pomodoro_runner.continue
       end
     end
 

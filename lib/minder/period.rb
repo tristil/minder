@@ -1,20 +1,22 @@
 require 'minder/timer'
 
 module Minder
-  class Interval
+  class Period
     attr_accessor :minutes,
                   :timer
 
     def initialize(minutes: nil)
       self.minutes = minutes
-      self.timer = Minder::Timer.new(seconds: minutes * 60)
+      self.timer = Minder::Timer.new(seconds: minutes.to_i * 60)
     end
 
     def start!
+      spawn("afplay #{ASSETS_LOCATION}/start.wav")
       timer.start!
     end
 
     def complete!
+      spawn("afplay #{ASSETS_LOCATION}/done.wav")
       @status = :completed
     end
 

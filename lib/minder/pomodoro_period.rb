@@ -1,13 +1,13 @@
-require 'minder/interval'
+require 'minder/period'
 
 module Minder
-  class PomodoroBreak < Interval
+  class PomodoroPeriod < Period
     def initialize(minutes: DEFAULT_WORK_PERIOD)
       super
     end
 
-    def preamble
-      "Break period"
+    def title
+      "Work period"
     end
   end
 end
