@@ -27,7 +27,7 @@ module Minder
     end
 
     def continue
-      advance_action
+      advance_action if current_action.elapsed?
       current_action.start!
     end
 

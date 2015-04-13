@@ -15,7 +15,11 @@ module Minder
     end
 
     def elapsed?
-      false
+      true
+    end
+
+    def completed?
+      true
     end
   end
 end

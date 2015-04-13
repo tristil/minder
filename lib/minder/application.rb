@@ -5,7 +5,8 @@ require 'curses'
 
 module Minder
   class Application
-    attr_accessor :config
+    attr_accessor :config,
+                  :window
 
     def initialize(config: Minder::Config.new(CONFIG_LOCATION))
       self.config = config
@@ -21,6 +22,9 @@ module Minder
       Curses.init_screen
       Curses.timeout = 0
 
+      self.window = Curses::Window.new(5, 40, 0, 0)
+      window.box(?|, ?-)
+
       loop do
         pomodoro_runner.tick
 
@@ -31,20 +35,21 @@ module Minder
 
         current_action = pomodoro_runner.current_action
         update_screen(current_action)
-
-        Curses.setpos(5, 0)
-        Curses.addstr(' ' * 10)
-        Curses.setpos(5, 0)
-        Curses.refresh
+        window.refresh
       end
       Curses.close_screen
     end
 
     def update_screen(action)
-      Curses.setpos(0,0)
-      Curses.addstr(action.title + (' ' * 30))
-      Curses.setpos(3,0)
-      Curses.addstr(action.message + (' ' * 30))
+      window.setpos(1,1)
+      print_line(action.title)
+      window.setpos(3,1)
+      print_line(action.message)
+    end
+
+    def print_line(text)
+      remainder = 38 - text.length
+      window.addstr(text + ' ' * remainder)
     end
 
     def pomodoro_runner
