@@ -1,12 +1,14 @@
 require 'minder/config'
 require 'minder/pomodoro_runner'
+require 'minder/task_recorder'
+require 'minder/scene'
 
 require 'curses'
 
 module Minder
   class Application
     attr_accessor :config,
-                  :window
+                  :scene
 
     def initialize(config: Minder::Config.new(CONFIG_LOCATION))
       self.config = config
@@ -18,12 +20,8 @@ module Minder
     end
 
     def run
-      Curses.noecho
-      Curses.init_screen
-      Curses.timeout = 0
-
-      self.window = Curses::Window.new(5, 40, 0, 0)
-      window.box(?|, ?-)
+      self.scene = Scene.new
+      scene.setup
 
       loop do
         pomodoro_runner.tick
@@ -33,23 +31,12 @@ module Minder
 
         resolution = handle_event(event)
 
-        current_action = pomodoro_runner.current_action
-        update_screen(current_action)
-        window.refresh
+        scene.action = pomodoro_runner.current_action
+        scene.tasks = task_recorder.tasks
+        scene.update
       end
-      Curses.close_screen
-    end
 
-    def update_screen(action)
-      window.setpos(1,1)
-      print_line(action.title)
-      window.setpos(3,1)
-      print_line(action.message)
-    end
-
-    def print_line(text)
-      remainder = 38 - text.length
-      window.addstr(text + ' ' * remainder)
+      scene.close
     end
 
     def pomodoro_runner
@@ -57,6 +44,10 @@ module Minder
         work_duration: config.work_duration,
         short_break_duration: config.short_break_duration,
         long_break_duration: config.long_break_duration)
+    end
+
+    def task_recorder
+      @task_recorder ||= TaskRecorder.new
     end
 
     def get_keycode
