@@ -15,6 +15,7 @@ module Minder
       self.config = config
       config.load
       FileUtils.mkdir_p(File.join(ENV['HOME'], '.minder'))
+      FileUtils.touch(DOING_FILE)
     end
 
     def config_location
@@ -75,7 +76,7 @@ module Minder
       if event == :continue
         pomodoro_runner.continue
       elsif event == :editor
-        `editor ~/.minder/doing.txt`
+        `$EDITOR ~/.minder/doing.txt`
         scene.close
         scene.setup
       end
