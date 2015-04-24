@@ -1,9 +1,13 @@
+require 'observer'
+
 require 'minder/pomodoro_period'
 require 'minder/break_period'
 require 'minder/idle_period'
 
 module Minder
   class PomodoroRunner
+    include Observable
+
     attr_accessor :work_duration,
                   :short_break_duration,
                   :long_break_duration
@@ -20,23 +24,35 @@ module Minder
     end
 
     def tick
-      if current_action.elapsed? && !current_action.completed?
-        current_action.complete!
-        @current_action = IdlePeriod.new
+      return if !current_action.elapsed? || current_action.completed?
+
+      changed
+      if current_action.is_a?(PomodoroPeriod)
+        notify_observers(:completed_work)
+      elsif current_action.is_a?(PomodoroBreak)
+        notify_observers(:completed_break)
       end
+
+      current_action.complete!
+      @current_action = IdlePeriod.new
     end
 
     def continue
-      advance_action if current_action.elapsed?
+      return unless current_action.elapsed?
+
+      advance_action
       current_action.start!
     end
 
     def advance_action
       @action_count += 1
+      changed
 
       if action_count.odd?
+        notify_observers(:started_work)
         @current_action = PomodoroPeriod.new(minutes: work_duration)
       else
+        notify_observers(:started_break)
         @current_action = BreakPeriod.new(minutes: break_duration)
       end
     end

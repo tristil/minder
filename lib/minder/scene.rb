@@ -1,8 +1,13 @@
+require 'ostruct'
+require 'minder/pomodoro_frame'
+require 'minder/message_frame'
+
 module Minder
   class Scene
     attr_accessor :action,
                   :tasks,
-                  :window
+                  :window,
+                  :message_window
 
     def initialize(action: nil, tasks: nil)
       self.action = action
@@ -14,16 +19,27 @@ module Minder
       Curses.init_screen
       Curses.timeout = 0
 
-      self.window = Curses::Window.new(5, 40, 0, 0)
-      window.box(?|, ?-)
+      self.window = PomodoroFrame.new(
+        height: 5,
+        width: 40,
+        top: 0,
+        left: 0)
+
+      self.message_window = MessageFrame.new(
+        height: 5,
+        width: 40,
+        top: 7,
+        left: 0)
     end
 
     def update
-      window.setpos(1,1)
-      print_line(action.title)
-      window.setpos(3,1)
-      print_line(action.message)
+      window.object = action
       window.refresh
+
+      message_window.object = OpenStruct.new(
+        message: 'What are you working on?'
+      )
+      message_window.refresh
     end
 
     def print_line(text)

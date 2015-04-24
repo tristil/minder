@@ -20,6 +20,8 @@ module Minder
     end
 
     def run
+      pomodoro_runner.add_observer(self, :respond_to_event)
+
       self.scene = Scene.new
       scene.setup
 
@@ -66,6 +68,9 @@ module Minder
       when 3 then :exit
       when 32 then :continue
       end
+    end
+
+    def respond_to_event(event)
     end
   end
 end
