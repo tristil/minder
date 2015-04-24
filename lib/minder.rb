@@ -3,6 +3,7 @@ module Minder
   DEFAULT_BREAK_PERIOD = 5
   CONFIG_LOCATION = ENV['HOME'] + '/.minder.json'
   ASSETS_LOCATION = File.expand_path(File.dirname(__FILE__) + '/../assets')
+  DOING_FILE = File.open(File.join(ENV["HOME"], '.minder', 'doing.txt'))
 
   def self.formatted_time(seconds)
     minutes = (seconds / 60).to_i
@@ -19,5 +20,11 @@ module Minder
 
   def self.is_linux?
     RUBY_PLATFORM =~ /linux/
+  end
+
+  def self.debugger(b)
+    Curses.close_screen
+    require 'pry'
+    b.pry
   end
 end

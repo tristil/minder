@@ -4,10 +4,14 @@ module Minder
   class PomodoroFrame < Frame
     def template
       <<-TEXT
-<%= @object.title %>
+<%= subject.title %>
 
-<%= @object.message %>
+<%= subject.message %>
 TEXT
+    end
+
+    def subject
+      object.current_action
     end
   end
 end

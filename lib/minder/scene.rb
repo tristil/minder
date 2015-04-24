@@ -4,47 +4,27 @@ require 'minder/message_frame'
 
 module Minder
   class Scene
-    attr_accessor :action,
-                  :tasks,
-                  :window,
-                  :message_window
+    attr_accessor :frames
 
-    def initialize(action: nil, tasks: nil)
-      self.action = action
-      self.tasks = tasks
+    def initialize
+      self.frames = []
     end
 
     def setup
       Curses.noecho
       Curses.init_screen
       Curses.timeout = 0
-
-      self.window = PomodoroFrame.new(
-        height: 5,
-        width: 40,
-        top: 0,
-        left: 0)
-
-      self.message_window = MessageFrame.new(
-        height: 5,
-        width: 40,
-        top: 7,
-        left: 0)
+      Curses.curs_set(0)
+      clear
     end
 
     def update
-      window.object = action
-      window.refresh
-
-      message_window.object = OpenStruct.new(
-        message: 'What are you working on?'
-      )
-      message_window.refresh
+      frames.map(&:refresh)
+      Curses.refresh
     end
 
-    def print_line(text)
-      remainder = 38 - text.length
-      window.addstr(text + ' ' * remainder)
+    def clear
+      Curses.clear
     end
 
     def close

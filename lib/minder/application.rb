@@ -4,6 +4,7 @@ require 'minder/task_recorder'
 require 'minder/scene'
 
 require 'curses'
+require 'fileutils'
 
 module Minder
   class Application
@@ -13,6 +14,7 @@ module Minder
     def initialize(config: Minder::Config.new(CONFIG_LOCATION))
       self.config = config
       config.load
+      FileUtils.mkdir_p(File.join(ENV['HOME'], '.minder'))
     end
 
     def config_location
@@ -25,6 +27,20 @@ module Minder
       self.scene = Scene.new
       scene.setup
 
+      scene.frames << PomodoroFrame.new(
+        object: pomodoro_runner,
+        height: 5,
+        width: 40,
+        top: 0,
+        left: 0)
+
+      scene.frames << MessageFrame.new(
+        object: task_recorder,
+        height: 5,
+        width: 40,
+        top: 7,
+        left: 0)
+
       loop do
         pomodoro_runner.tick
 
@@ -33,8 +49,6 @@ module Minder
 
         resolution = handle_event(event)
 
-        scene.action = pomodoro_runner.current_action
-        scene.tasks = task_recorder.tasks
         scene.update
       end
 
@@ -60,6 +74,10 @@ module Minder
     def handle_event(event)
       if event == :continue
         pomodoro_runner.continue
+      elsif event == :editor
+        `editor ~/.minder/doing.txt`
+        scene.close
+        scene.setup
       end
     end
 
@@ -67,6 +85,7 @@ module Minder
       case keycode
       when 3 then :exit
       when 32 then :continue
+      when 101 then :editor
       end
     end
 
