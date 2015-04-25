@@ -20,6 +20,7 @@ module Minder
     end
 
     def refresh
+      self.width = Curses.cols
       window.box(?|, ?-)
       b = binding
       lines = ERB.new(template).result(b).split("\n")
@@ -45,6 +46,7 @@ module Minder
     end
 
     def print_line(text)
+      text = text[0,width - 2]
       remainder = width - 2 - text.length
       window.addstr(text + ' ' * remainder)
     end

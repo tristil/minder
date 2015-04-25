@@ -4,7 +4,6 @@ module Minder
   CONFIG_LOCATION = ENV['HOME'] + '/.minder.json'
   ASSETS_LOCATION = File.expand_path(File.dirname(__FILE__) + '/../assets')
   DOING_FILE = File.join(ENV["HOME"], '.minder', 'doing.txt')
-
   def self.formatted_time(seconds)
     minutes = (seconds / 60).to_i
     seconds = (seconds % 60).round
@@ -22,7 +21,7 @@ module Minder
     RUBY_PLATFORM =~ /linux/
   end
 
-  def self.debugger(b)
+  def self.pry_open(b)
     Curses.close_screen
     require 'pry'
     b.pry

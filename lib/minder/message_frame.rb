@@ -10,6 +10,10 @@ module Minder
       end
     end
 
+    def build_window
+      Curses::Pad.new(min_height, width)
+    end
+
     def prompt_message
       <<-TEXT
 What are you working on?

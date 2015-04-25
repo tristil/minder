@@ -51,6 +51,7 @@ module Minder
         resolution = handle_event(event)
 
         scene.update
+        sleep(0.01)
       end
 
       scene.close
