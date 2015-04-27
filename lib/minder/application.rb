@@ -23,33 +23,24 @@ module Minder
     end
 
     def run
-      pomodoro_runner.add_observer(self, :respond_to_event)
+      pomodoro_runner.add_observer(self, :handle_event)
 
       self.scene = Scene.new
       scene.setup
 
-      scene.frames << PomodoroFrame.new(
-        object: pomodoro_runner,
-        height: 5,
-        width: 40,
-        top: 0,
-        left: 0)
+      pomodoro_frame = PomodoroFrame.new(object: pomodoro_runner)
+      scene.frames << pomodoro_frame
+      scene.frames << MessageFrame.new(object: task_recorder)
+      quick_add_frame = QuickAddFrame.new(object: task_recorder)
+      quick_add_frame.focus
+      scene.frames << quick_add_frame
 
-      scene.frames << MessageFrame.new(
-        object: task_recorder,
-        height: 5,
-        width: 40,
-        top: 7,
-        left: 0)
+      scene.frames.each do |frame|
+        frame.add_observer(self, :handle_event)
+      end
 
       loop do
         pomodoro_runner.tick
-
-        char_code = get_keycode
-        event = event_from_keycode(char_code)
-
-        resolution = handle_event(event)
-
         scene.update
         sleep(0.01)
       end
@@ -68,30 +59,21 @@ module Minder
       @task_recorder ||= TaskRecorder.new
     end
 
-    def get_keycode
-      char = Curses.getch
-      char && char.ord
-    end
+    def handle_event(event, data = {})
+      return unless event
 
-    def handle_event(event)
-      if event == :continue
+      case event
+      when :continue
         pomodoro_runner.continue
-      elsif event == :editor
+      when :editor
         `$EDITOR ~/.minder/doing.txt`
         scene.close
         scene.setup
+      when :add_task
+        task_recorder.add_task(data[:task])
+      when :switch_focus
+        scene.switch_focus
       end
-    end
-
-    def event_from_keycode(keycode)
-      case keycode
-      when 3 then :exit
-      when 32 then :continue
-      when 101 then :editor
-      end
-    end
-
-    def respond_to_event(event)
     end
   end
 end

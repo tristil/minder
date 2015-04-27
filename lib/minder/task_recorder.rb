@@ -9,5 +9,11 @@ module Minder
     def tasks?
       !tasks.empty?
     end
+
+    def add_task(task)
+      File.open(DOING_FILE, 'a') do |file|
+        file.write("#{task}\n")
+      end
+    end
   end
 end
