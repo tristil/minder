@@ -79,24 +79,24 @@ module Minder
       when :started_work
         scene.setup
         message_frame.hide
-        scene.redraw
       when :completed_work
         scene.setup
         message_frame.unhide
-        scene.redraw
       when :continue
         pomodoro_runner.continue
-        scene.redraw
       when :editor
         `$EDITOR ~/.minder/doing.txt`
-        scene.redraw
       when :add_task
         task_recorder.add_task(data[:task])
-        scene.redraw
       when :switch_focus
         scene.switch_focus
-        scene.redraw
+      when :select_next_task
+        task_recorder.select_next_task
+      when :select_previous_task
+        task_recorder.select_previous_task
       end
+
+      scene.redraw
     end
   end
 end
