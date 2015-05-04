@@ -41,6 +41,7 @@ TEXT
       event = case key
       when 'j' then :select_next_task
       when 'k' then :select_previous_task
+      when 'd' then :delete_task
       end
 
       changed

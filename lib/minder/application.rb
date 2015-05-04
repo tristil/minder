@@ -94,6 +94,8 @@ module Minder
         task_recorder.select_next_task
       when :select_previous_task
         task_recorder.select_previous_task
+      when :delete_task
+        task_recorder.delete_task
       end
 
       scene.redraw

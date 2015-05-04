@@ -39,5 +39,14 @@ module Minder
     def selected_task_index
       @selected_task_index
     end
+
+    def delete_task
+     lines = File.read(DOING_FILE).split("\n")
+     lines.delete_at(selected_task_index)
+
+     File.open(DOING_FILE, 'w') do |file|
+       file.write(lines.join("\n"))
+      end
+    end
   end
 end
