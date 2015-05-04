@@ -26,7 +26,7 @@ module Minder
     def switch_focus
       current_index = frames.find_index(focused_frame)
       focused_frame.unfocus
-      next_frame = frames[current_index + 1]
+      next_frame = frames[current_index + 1..-1].find { |frame| !frame.hidden? }
       if next_frame
         next_frame.focus
       else

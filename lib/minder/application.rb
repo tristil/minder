@@ -53,6 +53,8 @@ module Minder
         end
         pomodoro_runner.tick
         pomodoro_frame.refresh
+        scene.focused_frame.set_cursor_position
+        scene.focused_frame.window.refresh
         sleep(0.01)
       end
 
