@@ -16,20 +16,7 @@ module Minder
       Curses.init_screen
       Curses.timeout = 0
       clear
-    end
-
-    def update
-      current_height = 0
-      frames.each_with_index do |frame, index|
-        if index == 0
-          frame.refresh
-          next
-        end
-
-        current_height += frames[index - 1].height
-        frame.move(current_height, 0)
-        frame.refresh
-      end
+      Curses.refresh
     end
 
     def focused_frame
@@ -45,6 +32,38 @@ module Minder
       else
         frames[0].focus
       end
+    end
+
+    def refresh
+      frames.map(&:refresh)
+    end
+
+    def resize_frames
+      frames.map(&:resize)
+
+      current_height = 0
+      frames.each_with_index do |frame, index|
+        frame.listen if frame.focused?
+
+        if index == 0
+          current_height += frame.height
+          next
+        end
+
+        unless frame.hidden?
+          frame.move(current_height, 0)
+          current_height += frame.height
+        end
+      end
+    end
+
+    def redraw
+      refresh
+      resize_frames
+      refresh
+      Curses.curs_set(1)
+      focused_frame.set_cursor_position
+      focused_frame.window.refresh
     end
 
     def clear

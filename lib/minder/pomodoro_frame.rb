@@ -32,5 +32,9 @@ TEXT
       changed
       notify_observers(event)
     end
+
+    def set_cursor_position
+      window.setpos(1, lines[0].strip.length + 2)
+    end
   end
 end

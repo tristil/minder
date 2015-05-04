@@ -9,7 +9,10 @@ require 'fileutils'
 module Minder
   class Application
     attr_accessor :config,
-                  :scene
+                  :scene,
+                  :pomodoro_frame,
+                  :message_frame,
+                  :quick_add_frame
 
     def initialize(config: Minder::Config.new(CONFIG_LOCATION))
       self.config = config
@@ -28,20 +31,28 @@ module Minder
       self.scene = Scene.new
       scene.setup
 
-      pomodoro_frame = PomodoroFrame.new(object: pomodoro_runner)
-      scene.frames << pomodoro_frame
-      scene.frames << MessageFrame.new(object: task_recorder)
-      quick_add_frame = QuickAddFrame.new(object: task_recorder)
+      self.pomodoro_frame = PomodoroFrame.new(object: pomodoro_runner)
+      self.message_frame = MessageFrame.new(object: task_recorder)
+      self.quick_add_frame = QuickAddFrame.new(object: task_recorder)
       quick_add_frame.focus
+
+      scene.frames << pomodoro_frame
+      scene.frames << message_frame
       scene.frames << quick_add_frame
 
       scene.frames.each do |frame|
         frame.add_observer(self, :handle_event)
       end
 
+      scene.redraw
+
       loop do
+        scene.frames.each do |frame|
+          next unless frame.focused?
+          frame.listen
+        end
         pomodoro_runner.tick
-        scene.update
+        pomodoro_frame.refresh
         sleep(0.01)
       end
 
@@ -63,16 +74,26 @@ module Minder
       return unless event
 
       case event
+      when :started_work
+        scene.setup
+        message_frame.hide
+        scene.redraw
+      when :completed_work
+        scene.setup
+        message_frame.unhide
+        scene.redraw
       when :continue
         pomodoro_runner.continue
+        scene.redraw
       when :editor
         `$EDITOR ~/.minder/doing.txt`
-        scene.close
-        scene.setup
+        scene.redraw
       when :add_task
         task_recorder.add_task(data[:task])
+        scene.redraw
       when :switch_focus
         scene.switch_focus
+        scene.redraw
       end
     end
   end

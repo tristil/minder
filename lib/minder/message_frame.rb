@@ -30,5 +30,9 @@ Currently working on:
 <% end %>
 TEXT
     end
+
+    def set_cursor_position
+      window.setpos(3, 3)
+    end
   end
 end

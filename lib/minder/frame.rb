@@ -13,12 +13,14 @@ module Minder
 
     def initialize(height: 3, width: 40, top: 0, left: 0, object: nil)
       @focused = false
+      @hidden = false
       @has_cursor = false
       self.object = object
       self.height = height
       self.min_height = height
       self.width = width
       self.window = Curses::Window.new(min_height, width, top, left)
+      self.lines = []
     end
 
     def focus
@@ -35,6 +37,19 @@ module Minder
       @focused
     end
 
+    def hidden?
+      @hidden
+    end
+
+    def hide
+      erase
+      @hidden = true
+    end
+
+    def unhide
+      @hidden = false
+    end
+
     def template
       raise NotImplementedError
     end
@@ -47,14 +62,15 @@ module Minder
       @has_cursor
     end
 
-    def refresh
+    def listen
       window.timeout = 0
-      Curses.curs_set(has_cursor? ? 1 : 0)
-      handle_keypress(window.getch) if focused?
+      handle_keypress(window.getch)
+    end
+
+    def refresh
+      return if @hidden
       parse_template
       set_text
-      set_cursor_position
-      resize_frame
       window.refresh
     end
 
@@ -63,14 +79,18 @@ module Minder
       self.lines = ERB.new(template).result(b).split("\n")
     end
 
-    def resize_frame
+    def resize
+      erase
+
       self.width = Curses.cols
       if lines.length >= min_height - 2
         self.height = lines.length + 2
       else
         self.height = min_height
       end
+
       window.resize(height, width)
+      window.refresh
     end
 
     def set_text
@@ -85,6 +105,14 @@ module Minder
           print_line('')
         end
       end
+    end
+
+    def erase
+      height.times do |index|
+        window.setpos(index, 0)
+        window.addstr(' ' * width )
+      end
+      window.refresh
     end
 
     def set_cursor_position

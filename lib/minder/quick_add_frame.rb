@@ -26,16 +26,19 @@ TEXT
 
     def handle_char_keypress(key)
       self.input += key
+      refresh
     end
 
     def handle_non_char_keypress(key)
       case key
       when 127
         self.input.chop!
+        refresh
       when 10
         changed
         notify_observers(:add_task, { task: input })
         self.input = ''
+        refresh
       else
         #Minder.pry_open(binding)
       end

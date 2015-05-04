@@ -29,7 +29,7 @@ module Minder
       changed
       if current_action.is_a?(PomodoroPeriod)
         notify_observers(:completed_work)
-      elsif current_action.is_a?(PomodoroBreak)
+      elsif current_action.is_a?(BreakPeriod)
         notify_observers(:completed_break)
       end
 
