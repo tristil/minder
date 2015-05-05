@@ -45,12 +45,13 @@ module Minder
     end
 
     def delete_task
-     lines = File.read(DOING_FILE).split("\n")
-     lines.delete_at(selected_task_index)
+      lines = File.read(DOING_FILE).strip.split("\n")
+      lines.delete_at(selected_task_index)
 
-     File.open(DOING_FILE, 'w') do |file|
-       file.write(lines.join("\n"))
+      File.open(DOING_FILE, 'w') do |file|
+        file.write(lines.join("\n") + "\n")
       end
+      select_previous_task
     end
 
     def complete_task
