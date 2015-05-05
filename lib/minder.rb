@@ -4,6 +4,7 @@ module Minder
   CONFIG_LOCATION = ENV['HOME'] + '/.minder.json'
   ASSETS_LOCATION = File.expand_path(File.dirname(__FILE__) + '/../assets')
   DOING_FILE = File.join(ENV["HOME"], '.minder', 'doing.txt')
+  DONE_FILE = File.join(ENV["HOME"], '.minder', 'done.txt')
   def self.formatted_time(seconds)
     minutes = (seconds / 60).to_i
     seconds = (seconds % 60).round

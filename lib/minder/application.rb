@@ -19,6 +19,7 @@ module Minder
       config.load
       FileUtils.mkdir_p(File.join(ENV['HOME'], '.minder'))
       FileUtils.touch(DOING_FILE)
+      FileUtils.touch(DONE_FILE)
     end
 
     def config_location
@@ -77,10 +78,8 @@ module Minder
 
       case event
       when :started_work
-        scene.setup
         message_frame.hide
       when :completed_work
-        scene.setup
         message_frame.unhide
       when :continue
         pomodoro_runner.continue
@@ -96,6 +95,8 @@ module Minder
         task_recorder.select_previous_task
       when :delete_task
         task_recorder.delete_task
+      when :complete_task
+        task_recorder.complete_task
       end
 
       scene.redraw

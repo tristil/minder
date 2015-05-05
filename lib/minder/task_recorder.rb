@@ -40,12 +40,24 @@ module Minder
       @selected_task_index
     end
 
+    def selected_task
+      tasks[selected_task_index]
+    end
+
     def delete_task
      lines = File.read(DOING_FILE).split("\n")
      lines.delete_at(selected_task_index)
 
      File.open(DOING_FILE, 'w') do |file|
        file.write(lines.join("\n"))
+      end
+    end
+
+    def complete_task
+      task = selected_task
+      delete_task
+      File.open(DONE_FILE, 'a') do |file|
+        file.write("[#{Time.now.strftime('%Y-%m-%d %H:%M:%S')}] #{task}\n")
       end
     end
   end

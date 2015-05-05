@@ -24,7 +24,7 @@ TEXT
 
     def doing_message
       text = <<-TEXT
-Currently working on:
+Tasks               (x) to delete (d) to mark as done
 
 TEXT
       object.tasks.each do |task|
@@ -41,7 +41,8 @@ TEXT
       event = case key
       when 'j' then :select_next_task
       when 'k' then :select_previous_task
-      when 'd' then :delete_task
+      when 'd' then :complete_task
+      when 'x' then :delete_task
       end
 
       changed
