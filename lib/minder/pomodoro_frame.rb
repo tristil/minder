@@ -3,15 +3,20 @@ require 'minder/frame'
 module Minder
   class PomodoroFrame < Frame
     def template
-      <<-TEXT
+      text = <<-TEXT
 <%= subject.title %>
 
 <%= subject.message %>
 TEXT
+      if task_manager.started_task
+        text += "\nWorking on #{task_manager.started_task}"
+      end
+
+      text
     end
 
     def subject
-      object.current_action
+      pomodoro_runner.current_action
     end
 
     def handle_char_keypress(key)

@@ -32,9 +32,11 @@ module Minder
       self.scene = Scene.new
       scene.setup
 
-      self.pomodoro_frame = PomodoroFrame.new(object: pomodoro_runner)
-      self.message_frame = MessageFrame.new(object: task_recorder)
-      self.quick_add_frame = QuickAddFrame.new(object: task_recorder)
+      options = { pomodoro_runner: pomodoro_runner, task_manager: task_recorder  }
+
+      self.pomodoro_frame = PomodoroFrame.new(options)
+      self.message_frame = MessageFrame.new(options)
+      self.quick_add_frame = QuickAddFrame.new(options)
       quick_add_frame.focus
 
       scene.frames << pomodoro_frame
@@ -97,6 +99,10 @@ module Minder
         task_recorder.delete_task
       when :complete_task
         task_recorder.complete_task
+      when :start_task
+        task_recorder.start_task
+      when :unstart_task
+        task_recorder.start_task
       end
 
       scene.redraw

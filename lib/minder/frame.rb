@@ -8,14 +8,23 @@ module Minder
                   :height,
                   :min_height,
                   :width,
-                  :object,
+                  :pomodoro_runner,
+                  :task_manager,
                   :lines
 
-    def initialize(height: 3, width: 40, top: 0, left: 0, object: nil)
+    def initialize(**options)
+      height = options.fetch(:height, 3)
+      width = options.fetch(:width, 40)
+      top = options.fetch(:top, 0)
+      left = options.fetch(:left, 0)
+      task_manager = options.fetch(:task_manager)
+      pomodoro_runner = options.fetch(:pomodoro_runner)
+
       @focused = false
       @hidden = false
       @has_cursor = false
-      self.object = object
+      self.pomodoro_runner = pomodoro_runner
+      self.task_manager = task_manager
       self.height = height
       self.min_height = height
       self.width = width

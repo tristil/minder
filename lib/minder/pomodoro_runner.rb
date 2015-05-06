@@ -26,15 +26,16 @@ module Minder
     def tick
       return if !current_action.elapsed? || current_action.completed?
 
-      changed
-      if current_action.is_a?(PomodoroPeriod)
-        notify_observers(:completed_work)
-      elsif current_action.is_a?(BreakPeriod)
-        notify_observers(:completed_break)
-      end
-
+      old_action = current_action
       current_action.complete!
       @current_action = IdlePeriod.new
+
+      changed
+      if old_action.is_a?(PomodoroPeriod)
+        notify_observers(:completed_work)
+      elsif old_action.is_a?(BreakPeriod)
+        notify_observers(:completed_break)
+      end
     end
 
     def continue
