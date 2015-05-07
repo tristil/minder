@@ -87,6 +87,7 @@ module Minder
         pomodoro_runner.continue
       when :editor
         `$EDITOR ~/.minder/doing.txt`
+        task_recorder.reload
       when :add_task
         task_recorder.add_task(data[:task])
       when :switch_focus
