@@ -7,7 +7,7 @@ module Minder
     end
 
     def message
-      ''
+      nil
     end
 
     def start!

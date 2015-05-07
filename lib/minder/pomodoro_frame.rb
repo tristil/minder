@@ -4,18 +4,27 @@ module Minder
   class PomodoroFrame < Frame
     def template
       text = <<-TEXT
-<%= subject.title %>
-
-<%= subject.message %>
+<%= period.title %>
 TEXT
+
+      if period.message
+        text += <<-TEXT
+
+<%= period.message %>
+TEXT
+      end
+
       if task_manager.started_task
-        text += "\nWorking on #{task_manager.started_task}"
+        text += <<-TEXT
+
+Working on: #{task_manager.started_task}
+TEXT
       end
 
       text
     end
 
-    def subject
+    def period
       pomodoro_runner.current_action
     end
 
