@@ -51,6 +51,7 @@ module Minder
       scene.redraw
       scene.redraw
 
+      old_dimensions = [Curses.lines, Curses.cols]
       loop do
         scene.frames.each do |frame|
           next unless frame.focused?
@@ -60,6 +61,14 @@ module Minder
         pomodoro_frame.refresh
         scene.focused_frame.set_cursor_position
         scene.focused_frame.window_refresh
+
+        new_dimensions = [Curses.lines, Curses.cols]
+        if new_dimensions != old_dimensions
+          scene.redraw
+          scene.redraw
+          old_dimensions = new_dimensions
+        end
+
         sleep(0.01)
       end
 
@@ -108,6 +117,7 @@ module Minder
         task_recorder.start_task
       end
 
+      scene.redraw
       scene.redraw
     end
   end
