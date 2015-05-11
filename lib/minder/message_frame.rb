@@ -107,6 +107,14 @@ TEXT
       when 'x' then :delete_task
       when 's' then :start_task
       when 'u' then :unstart_task
+      when 'G' then :select_last_task
+      when 'g'
+        @keypress_memory ||= []
+        @keypress_memory << 'g'
+        if @keypress_memory == ['g', 'g']
+          @keypress_memory = []
+          :select_first_task
+        end
       end
 
       changed

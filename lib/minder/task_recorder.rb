@@ -108,5 +108,13 @@ module Minder
     def started_task
       tasks.find(&:started?)
     end
+
+    def select_last_task
+      @selected_task_index = tasks.length - 1
+    end
+
+    def select_first_task
+      @selected_task_index = 0
+    end
   end
 end

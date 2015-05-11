@@ -115,6 +115,10 @@ module Minder
         task_recorder.start_task
       when :unstart_task
         task_recorder.unstart_task
+      when :select_last_task
+        task_recorder.select_last_task
+      when :select_first_task
+        task_recorder.select_first_task
       end
 
       scene.redraw
