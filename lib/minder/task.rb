@@ -13,6 +13,7 @@ module Minder
     end
 
     def unstart
+      self.description.gsub!(/\* /, '')
       self.started = false
     end
 
@@ -21,7 +22,7 @@ module Minder
     end
 
     def to_s
-      description.gsub('* ', '')
+      description.gsub(/\A\* /, '')
     end
   end
 end

@@ -106,7 +106,7 @@ TEXT
       when 'd' then :complete_task
       when 'x' then :delete_task
       when 's' then :start_task
-      when 's' then :unstart_task
+      when 'u' then :unstart_task
       end
 
       changed

@@ -1,4 +1,5 @@
 require 'minder/task'
+require 'fileutils'
 
 module Minder
   class TaskRecorder
@@ -52,7 +53,7 @@ module Minder
     def delete_task
       lines.delete_at(selected_task_index)
       @tasks = nil
-      write_file
+      write_file_with_backup
       reload
 
       select_previous_task
@@ -75,10 +76,15 @@ module Minder
       end
     end
 
-    def write_file
-      File.open(DOING_FILE, 'w') do |file|
+    def write_file_with_backup
+      FileUtils.cp(DOING_FILE, DOING_FILE + '.old')
+      write_file(DOING_FILE)
+    end
+
+    def write_file(path)
+      File.open(path, 'w') do |file|
         tasks.each do |task|
-          line = task.to_s.gsub('* ', '')
+          line = task.to_s
           line = "* #{line}" if task.started?
           file.write("#{line}\n")
         end
@@ -87,14 +93,14 @@ module Minder
 
     def start_task
       selected_task.start
-      write_file
+      write_file_with_backup
       add_to_done_file("Started: #{selected_task.description}")
       reload
     end
 
     def unstart_task
       selected_task.unstart
-      write_file
+      write_file_with_backup
       add_to_done_file("Un-started: #{selected_task.description}")
       reload
     end

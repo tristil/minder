@@ -114,7 +114,7 @@ module Minder
       when :start_task
         task_recorder.start_task
       when :unstart_task
-        task_recorder.start_task
+        task_recorder.unstart_task
       end
 
       scene.redraw
