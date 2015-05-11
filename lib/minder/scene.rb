@@ -41,19 +41,27 @@ module Minder
     def resize_frames
       frames.map(&:resize)
 
-      current_height = 0
-      frames.each_with_index do |frame, index|
-        frame.listen if frame.focused?
+      available_height = Curses.lines - frames.last.height
 
-        if index == 0
-          current_height += frame.height
-          next
-        end
+      frames.first.move(0, 0)
+      next_height = frames.first.height
+      second_frame = frames[1]
 
-        unless frame.hidden?
-          frame.move(current_height, 0)
-          current_height += frame.height
+      unless second_frame.hidden?
+        proposed_height = available_height - frames.first.height
+        if proposed_height < second_frame.desired_height
+          second_frame.height = proposed_height
+        else
+          second_frame.height = second_frame.desired_height
         end
+        second_frame.move(next_height, 0)
+        next_height += second_frame.height
+      end
+
+      if next_height <= available_height
+        frames.last.move(next_height, 0)
+      else
+        frames.last.move(available_height, 0)
       end
     end
 
@@ -63,7 +71,7 @@ module Minder
       refresh
       Curses.curs_set(1)
       focused_frame.set_cursor_position
-      focused_frame.window.refresh
+      focused_frame.window_refresh
     end
 
     def clear

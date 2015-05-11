@@ -47,6 +47,8 @@ module Minder
         frame.add_observer(self, :handle_event)
       end
 
+      # TODO: Eww, gross
+      scene.redraw
       scene.redraw
 
       loop do
@@ -57,7 +59,7 @@ module Minder
         pomodoro_runner.tick
         pomodoro_frame.refresh
         scene.focused_frame.set_cursor_position
-        scene.focused_frame.window.refresh
+        scene.focused_frame.window_refresh
         sleep(0.01)
       end
 

@@ -5,9 +5,11 @@ module Minder
     include Observable
 
     attr_accessor :window,
-                  :height,
                   :min_height,
+                  :height,
                   :width,
+                  :left,
+                  :top,
                   :pomodoro_runner,
                   :task_manager,
                   :lines
@@ -25,11 +27,19 @@ module Minder
       @has_cursor = false
       self.pomodoro_runner = pomodoro_runner
       self.task_manager = task_manager
-      self.height = height
       self.min_height = height
+
+      self.height = height
       self.width = width
-      self.window = Curses::Window.new(min_height, width, top, left)
+      self.top = top
+      self.left = left
+
+      self.window = build_window
       self.lines = []
+    end
+
+    def build_window
+      Curses::Window.new(min_height, width, top, left)
     end
 
     def focus
@@ -80,6 +90,10 @@ module Minder
       return if @hidden
       parse_template
       set_text
+      window_refresh
+    end
+
+    def window_refresh
       window.refresh
     end
 
@@ -99,7 +113,7 @@ module Minder
       end
 
       window.resize(height, width)
-      window.refresh
+      window_refresh
     end
 
     def set_text
@@ -121,7 +135,7 @@ module Minder
         window.setpos(index, 0)
         window.addstr(' ' * width )
       end
-      window.refresh
+      window_refresh
     end
 
     def set_cursor_position

@@ -2,6 +2,13 @@ require 'minder/frame'
 
 module Minder
   class MessageFrame < Frame
+    attr_reader :current_line
+
+    def initialize(*)
+      super
+      self.height = desired_height
+    end
+
     def template
       if task_manager.tasks?
         doing_message
@@ -10,9 +17,13 @@ module Minder
       end
     end
 
-    def build_window
-      Curses::Pad.new(min_height, width)
-    end
+    #def build_window
+      #Curses::Pad.new(min_height, width)
+    #end
+
+    #def window_refresh
+      #window.refresh(scroll_offset, 0, 3, 0, height + 2, width)
+    #end
 
     def prompt_message
       <<-TEXT
@@ -22,13 +33,17 @@ Press (e) to open editor.
 TEXT
     end
 
-    def doing_message
-      text = <<-TEXT
+    def header_text
+<<-TEXT
 Tasks        (s) start (x) to delete (d) to mark as done
 
 TEXT
+    end
+
+    def tasks_text
+      text = ''
       task_manager.tasks.each do |task|
-        if task.started?
+         if task.started?
           text += "-[*] #{task}\n"
         else
           text += "-[ ] #{task}\n"
@@ -37,8 +52,51 @@ TEXT
       text
     end
 
+    def tasks_text_lines
+      tasks_text.split("\n")
+    end
+
+    def header_text_lines
+      header_text.split("\n")
+    end
+
+    def desired_height
+      header_text_lines.length + tasks_text_lines.length + 3
+    end
+
+    def allocated_tasks_height
+      height - header_text_lines.length
+    end
+
+    def offset_tasks_text
+      tasks_text_lines[scroll_offset..(allocated_tasks_height + scroll_offset - 4)].join("\n")
+    end
+
+    def blank_line
+      " " * (width - 2) + "\n"
+    end
+
+    def doing_message
+      header_text +
+        offset_tasks_text #+
+        #blank_lines
+    end
+
+    def blank_lines
+      blank_line * scroll_offset
+    end
+
     def set_cursor_position
-      window.setpos(3 + task_manager.selected_task_index, 3)
+      window.setpos(3 + task_manager.selected_task_index - scroll_offset, 3)
+    end
+
+    def scroll_offset
+      position = task_manager.selected_task_index + 5
+      if height - position < 0
+        (height - position).abs
+      else
+        0
+      end
     end
 
     def handle_char_keypress(key)
