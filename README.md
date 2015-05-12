@@ -20,7 +20,7 @@ Plans for the future include:
   [SelfControl](https://github.com/SelfControlApp/selfcontrol/).
 - Keeping track of the number of pomodoros performed during a day.
 - Desktop notifications for Linux and MacOS
-- Prompts to summarize plans for the day and day's end progress.
+- Prompts to summarize plans for the day and day's end progress, inspired by [Day One](http://dayoneapp.com/).
 
 Audio files are from https://github.com/niftylettuce/pomodoro-timer
 
