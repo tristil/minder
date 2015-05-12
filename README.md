@@ -15,7 +15,7 @@ At present it has these features:
 
 Plans for the future include:
 
-- Filtering by GTD-style labels (like @context, +project, and #tag)
+- Filtering by [Getting Things Done](http://gettingthingsdone.com/)-style labels (like @context, +project, and #tag)
 - Integration with a website blacklist tool like
   [SelfControl](https://github.com/SelfControlApp/selfcontrol/).
 - Keeping track of the number of pomodoros performed during a day.
