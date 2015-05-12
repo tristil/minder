@@ -41,7 +41,9 @@ commands for each section only work when the section is focused.
   - Press 'x' to delete a task.
   - Press 's' to start a task.
   - Press 'u' to un-start a task.
-- The Quick Add Task section. Enter text here to add a task to the tasks list
+  - Press 'j' to do down the list and 'k' to go up.
+  - Press 'gg' to go to top of task list and 'G' to go to bottom of list.
+- The Quick Add Task section. Enter text here to add a task to the tasks list.
   at any time.
 
 ## License
