@@ -26,6 +26,10 @@ Audio files are from https://github.com/niftylettuce/pomodoro-timer
 
 ## Usage
 
+Minder is designed to be run in a separate pane in a Tmux session (or in a split 
+inside a program like iTerm2). The tasks list will scroll if there is not enough 
+room to display all tasks.
+
 There are three sections. You can switch between sections by pressing Tab. The
 commands for each section only work when the section is focused.
 
