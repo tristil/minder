@@ -11,7 +11,7 @@ At present it has these features:
   soothing sounds of a "pomodoro" kitchen timer at the beginning and end of a
   break.
 - A todo log that allows starting, unstarting and completing a task.
-- Stores a simple text log of task and pomodoro activity.
+- Stores a simple text log of task and pomodoro activity (in `~/.minder/done.txt`).
 
 Plans for the future include:
 
