@@ -1,4 +1,5 @@
 require 'ostruct'
+require 'minder/help_frame'
 require 'minder/pomodoro_frame'
 require 'minder/message_frame'
 require 'minder/quick_add_frame'
@@ -34,28 +35,40 @@ module Minder
       end
     end
 
+    def focus_frame(frame)
+      focused_frame.unfocus
+      frame.focus
+    end
+
     def refresh
       frames.map(&:refresh)
     end
 
     def resize_frames
       frames.map(&:resize)
+      first_frame = frames[0]
+      last_frame = frames.last
 
-      available_height = Curses.lines - frames.last.height
+      available_height = Curses.lines - last_frame.height
 
-      frames.first.move(0, 0)
-      next_height = frames.first.height
-      second_frame = frames[1]
+      first_frame.move(0, 0)
+      next_height = first_frame.height
 
-      unless second_frame.hidden?
-        proposed_height = available_height - frames.first.height
-        if proposed_height < second_frame.desired_height
-          second_frame.height = proposed_height
-        else
-          second_frame.height = second_frame.desired_height
+      previous_frame_height = next_height
+
+      middle_frames = frames[1...-1]
+      middle_frames.each do |frame|
+        unless frame.hidden?
+          proposed_height = available_height - previous_frame_height
+          if proposed_height < frame.desired_height
+            frame.height = proposed_height
+          else
+            frame.height = frame.desired_height
+          end
+          frame.move(next_height, 0)
+          previous_frame_height = frame.height
+          next_height += frame.height
         end
-        second_frame.move(next_height, 0)
-        next_height += second_frame.height
       end
 
       if next_height <= available_height

@@ -39,8 +39,6 @@ TEXT
         notify_observers(:add_task, { task: input })
         self.input = ''
         refresh
-      else
-        #Minder.pry_open(binding)
       end
     end
   end

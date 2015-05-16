@@ -17,14 +17,6 @@ module Minder
       end
     end
 
-    #def build_window
-      #Curses::Pad.new(min_height, width)
-    #end
-
-    #def window_refresh
-      #window.refresh(scroll_offset, 0, 3, 0, height + 2, width)
-    #end
-
     def prompt_message
       <<-TEXT
 What are you working on?
@@ -35,7 +27,7 @@ TEXT
 
     def header_text
 <<-TEXT
-Tasks        (s) start (x) to delete (d) to mark as done
+Tasks         ? to see commands
 
 TEXT
     end
@@ -109,6 +101,7 @@ TEXT
       when 'u' then :unstart_task
       when 'G' then :select_last_task
       when 'e' then :editor
+      when '?' then :help
       when 'g'
         @keypress_memory ||= []
         @keypress_memory << 'g'

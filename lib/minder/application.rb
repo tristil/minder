@@ -11,6 +11,7 @@ module Minder
     attr_accessor :config,
                   :scene,
                   :pomodoro_frame,
+                  :help_frame,
                   :message_frame,
                   :quick_add_frame
 
@@ -35,12 +36,15 @@ module Minder
       options = { pomodoro_runner: pomodoro_runner, task_manager: task_recorder  }
 
       self.pomodoro_frame = PomodoroFrame.new(options)
+      self.help_frame = HelpFrame.new(options)
+      help_frame.hide
       self.message_frame = MessageFrame.new(options)
       self.quick_add_frame = QuickAddFrame.new(options)
       quick_add_frame.focus
 
       scene.frames << pomodoro_frame
       scene.frames << message_frame
+      scene.frames << help_frame
       scene.frames << quick_add_frame
 
       scene.frames.each do |frame|
@@ -119,6 +123,14 @@ module Minder
         task_recorder.select_last_task
       when :select_first_task
         task_recorder.select_first_task
+      when :help
+        message_frame.hide
+        help_frame.unhide
+        scene.focus_frame(help_frame)
+      when :hide_help
+        help_frame.hide
+        message_frame.unhide
+        scene.focus_frame(message_frame)
       end
 
       scene.redraw
