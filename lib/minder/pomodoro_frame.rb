@@ -31,7 +31,6 @@ TEXT
     def handle_char_keypress(key)
       event = case key
       when ' ' then :continue
-      when 'e' then :editor
       end
 
       changed

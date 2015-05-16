@@ -108,6 +108,7 @@ TEXT
       when 's' then :start_task
       when 'u' then :unstart_task
       when 'G' then :select_last_task
+      when 'e' then :editor
       when 'g'
         @keypress_memory ||= []
         @keypress_memory << 'g'
