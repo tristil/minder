@@ -19,7 +19,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'curses', '~> 1.0', '>= 1.0.1'
   spec.add_runtime_dependency 'virtus', '~> 1.0', '>= 1.0.5'
 
-  spec.add_development_dependency "bundler", '~> 0'
+  spec.add_development_dependency "bundler", '~> 1'
   spec.add_development_dependency "rspec", '~> 3.2', '>= 3.2'
   spec.add_development_dependency "timecop", '~> 0.7', '>= 0.7.3'
   spec.add_development_dependency "pry", '~> 0.10', '>= 0.10'
