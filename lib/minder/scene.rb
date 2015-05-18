@@ -47,41 +47,53 @@ module Minder
 
     def resize_frames
       frames.map(&:resize)
-      first_frame = frames[0]
-      last_frame = frames.last
-
-      available_height = Curses.lines - last_frame.height
+      first_frame = frames.first
 
       first_frame.move(0, 0)
       next_height = first_frame.height
 
-      previous_frame_height = next_height
+      other_frames = (frames.reject(&:hidden?) - [main_frame]).compact
+      if main_frame
 
-      middle_frames = frames[1...-1]
-      middle_frames.each do |frame|
-        unless frame.hidden?
-          proposed_height = available_height - previous_frame_height
-
-          if proposed_height < frame.min_height
-            proposed_height = frame.min_height
-          end
-
-          if proposed_height < frame.desired_height
-            frame.height = proposed_height
-          else
-            frame.height = frame.desired_height
-          end
-          frame.move(next_height, 0)
-          previous_frame_height = frame.height
-          next_height += frame.height
+        other_height = other_frames.reduce(0) do |num, frame|
+          num += frame.height
+          num
         end
+
+        available_height = Curses.lines - other_height
+
+        if available_height > main_frame.desired_height
+          main_frame.height = main_frame.desired_height
+        else
+          main_frame.height = available_height
+        end
+        main_frame.move(next_height, 0)
+
+        next_height += main_frame.height
       end
 
-      if next_height <= available_height
-        frames.last.move(next_height, 0)
-      else
-        frames.last.move(available_height, 0)
+      (other_frames - [first_frame]).each do |frame|
+        frame.move(next_height, 0)
+        next_height += frame.height
       end
+    end
+
+    def main_frame
+      return if message_frame.hidden? && help_frame.hidden?
+
+      if message_frame.hidden?
+        help_frame
+      else
+        message_frame
+      end
+    end
+
+    def message_frame
+      @message_frame ||= frames.find { |frame| frame.is_a?(MessageFrame) }
+    end
+
+    def help_frame
+      @help_frame ||= frames.find { |frame| frame.is_a?(HelpFrame) }
     end
 
     def redraw
