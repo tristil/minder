@@ -13,6 +13,9 @@ Commands:   any key to dismiss
 (e) open tasks in text editor
 (G) go to bottom of list
 (gg) go to top of list
+(/) Search among tasks
+(n) Next search result
+(N) Previous search result
 (?) to view this text
       TEXT
     end

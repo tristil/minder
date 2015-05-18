@@ -6,8 +6,12 @@ module Minder
     attr_accessor :tasks,
                   :lines
 
+    attr_reader :search_results
+
     def initialize
       @selected_task_index = 0
+      @selected_search_result = 0
+      @search_results = []
       reload
     end
 
@@ -115,6 +119,38 @@ module Minder
 
     def select_first_task
       @selected_task_index = 0
+    end
+
+    def search(text)
+      @search_results = tasks.select { |task| task.description.include?(text) }
+      @selected_search_result = 0
+    end
+
+    def select_search_result(search_index = 0)
+      return if search_results.empty?
+
+      @selected_task_index = tasks.find_index do |task|
+        task.description == search_results[search_index].description
+      end
+    end
+
+    def next_search
+      @selected_search_result += 1
+
+      if @selected_search_result > search_results.length - 1
+        @selected_search_result = 0
+      end
+      select_search_result(@selected_search_result)
+    end
+
+    def previous_search
+      @selected_search_result -= 1
+
+      if @selected_search_result < 0
+        @selected_search_result = search_results.length - 1
+      end
+
+      select_search_result(@selected_search_result)
     end
   end
 end

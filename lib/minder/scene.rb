@@ -1,5 +1,6 @@
 require 'ostruct'
 require 'minder/help_frame'
+require 'minder/search_frame'
 require 'minder/pomodoro_frame'
 require 'minder/message_frame'
 require 'minder/quick_add_frame'
@@ -60,6 +61,11 @@ module Minder
       middle_frames.each do |frame|
         unless frame.hidden?
           proposed_height = available_height - previous_frame_height
+
+          if proposed_height < frame.min_height
+            proposed_height = frame.min_height
+          end
+
           if proposed_height < frame.desired_height
             frame.height = proposed_height
           else

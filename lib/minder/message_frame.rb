@@ -64,18 +64,9 @@ TEXT
       tasks_text_lines[scroll_offset..(allocated_tasks_height + scroll_offset - 4)].join("\n")
     end
 
-    def blank_line
-      " " * (width - 2) + "\n"
-    end
-
     def doing_message
       header_text +
-        offset_tasks_text #+
-        #blank_lines
-    end
-
-    def blank_lines
-      blank_line * scroll_offset
+        offset_tasks_text
     end
 
     def set_cursor_position
@@ -102,6 +93,9 @@ TEXT
       when 'G' then :select_last_task
       when 'e' then :editor
       when '?' then :help
+      when '/' then :search
+      when 'n' then :next_search
+      when 'N' then :previous_search
       when 'g'
         @keypress_memory ||= []
         @keypress_memory << 'g'
