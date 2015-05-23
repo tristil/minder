@@ -137,6 +137,7 @@ module Minder
         scene.focus_frame(message_frame)
       when :search
         search_frame.unhide
+        search_frame.begin_search
         scene.focus_frame(search_frame)
       when :submit_search
         search_frame.hide

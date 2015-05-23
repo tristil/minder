@@ -44,6 +44,10 @@ TEXT
         refresh
       end
     end
+
+    def begin_search
+      @search_string = ''
+    end
   end
 end
 
