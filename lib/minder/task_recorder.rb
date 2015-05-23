@@ -12,11 +12,29 @@ module Minder
       @selected_task_index = 0
       @selected_search_result = 0
       @search_results = []
+      @filter = ''
       reload
     end
 
+    def filter(text)
+      @tasks = nil
+      @filter = text
+    end
+
     def tasks
-      @tasks ||= lines.map { |task| Task.new(description: task) }
+      @tasks ||= begin
+                   @tasks = build_tasks.select do |task|
+                     task.description.downcase.include?(@filter.downcase)
+                   end
+                 end
+    end
+
+    def unfiltered_tasks
+      build_tasks
+    end
+
+    def build_tasks
+      lines.map { |task| Task.new(description: task) }
     end
 
     def tasks?
@@ -87,7 +105,7 @@ module Minder
 
     def write_file(path)
       File.open(path, 'w') do |file|
-        tasks.each do |task|
+        unfiltered_tasks.each do |task|
           line = task.to_s
           line = "* #{line}" if task.started?
           file.write("#{line}\n")

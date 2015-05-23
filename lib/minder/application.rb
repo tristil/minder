@@ -13,6 +13,7 @@ module Minder
                   :pomodoro_frame,
                   :help_frame,
                   :search_frame,
+                  :filter_frame,
                   :message_frame,
                   :quick_add_frame
 
@@ -39,6 +40,8 @@ module Minder
       self.pomodoro_frame = PomodoroFrame.new(options)
       self.help_frame = HelpFrame.new(options)
       help_frame.hide
+      self.filter_frame = FilterFrame.new(options)
+      filter_frame.hide
       self.search_frame = SearchFrame.new(options)
       search_frame.hide
       self.message_frame = MessageFrame.new(options)
@@ -48,6 +51,7 @@ module Minder
       scene.frames << pomodoro_frame
       scene.frames << message_frame
       scene.frames << help_frame
+      scene.frames << filter_frame
       scene.frames << search_frame
       scene.frames << quick_add_frame
 
@@ -135,6 +139,14 @@ module Minder
         help_frame.hide
         message_frame.unhide
         scene.focus_frame(message_frame)
+      when :open_filter
+        filter_frame.unhide
+        scene.focus_frame(filter_frame)
+      when :close_filter
+        filter_frame.hide
+        scene.focus_frame(message_frame)
+      when :update_filter
+        task_recorder.filter(data[:text])
       when :search
         search_frame.unhide
         search_frame.begin_search

@@ -1,6 +1,7 @@
 require 'ostruct'
 require 'minder/help_frame'
 require 'minder/search_frame'
+require 'minder/filter_frame'
 require 'minder/pomodoro_frame'
 require 'minder/message_frame'
 require 'minder/quick_add_frame'

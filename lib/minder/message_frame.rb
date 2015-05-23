@@ -96,6 +96,7 @@ TEXT
       when '/' then :search
       when 'n' then :next_search
       when 'N' then :previous_search
+      when 'f' then :open_filter
       when 'g'
         @keypress_memory ||= []
         @keypress_memory << 'g'
