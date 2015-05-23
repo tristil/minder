@@ -33,9 +33,9 @@ TEXT
     end
 
     def handle_non_char_keypress(key)
-      if key == 10 && filter_string == ''
+      if key == 10
         changed
-        notify_observers(:close_filter)
+        notify_observers(:submit_filter, { text: filter_string })
       end
 
       @filter_string.chop! if key == 127

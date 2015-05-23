@@ -142,8 +142,8 @@ module Minder
       when :open_filter
         filter_frame.unhide
         scene.focus_frame(filter_frame)
-      when :close_filter
-        filter_frame.hide
+      when :submit_filter
+        filter_frame.hide if data[:text] == ''
         scene.focus_frame(message_frame)
       when :update_filter
         task_recorder.filter(data[:text])

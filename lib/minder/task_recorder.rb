@@ -6,7 +6,8 @@ module Minder
     attr_accessor :tasks,
                   :lines
 
-    attr_reader :search_results
+    attr_reader :search_results,
+                :unfiltered_tasks
 
     def initialize
       @selected_task_index = 0
@@ -22,15 +23,17 @@ module Minder
     end
 
     def tasks
-      @tasks ||= begin
-                   @tasks = build_tasks.select do |task|
-                     task.description.downcase.include?(@filter.downcase)
-                   end
-                 end
+      @tasks ||= build_filtered_tasks
+    end
+
+    def build_filtered_tasks
+      build_tasks.select do |task|
+        task.description.downcase.include?(@filter.downcase)
+      end
     end
 
     def unfiltered_tasks
-      build_tasks
+      @unfiltered_tasks ||= build_tasks
     end
 
     def build_tasks
@@ -75,6 +78,7 @@ module Minder
     def delete_task
       lines.delete_at(selected_task_index)
       @tasks = nil
+      @unfiltered_tasks = nil
       write_file_with_backup
       reload
 
@@ -84,6 +88,7 @@ module Minder
     def reload
       self.lines = File.read(DOING_FILE).strip.split("\n")
       @tasks = nil
+      @unfiltered_tasks = nil
     end
 
     def complete_task
@@ -140,7 +145,9 @@ module Minder
     end
 
     def search(text)
-      @search_results = tasks.select { |task| task.description.include?(text) }
+      @search_results = tasks.select do |task|
+        task.description.downcase.include?(text.downcase)
+      end
       @selected_search_result = 0
     end
 
