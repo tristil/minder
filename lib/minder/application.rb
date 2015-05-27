@@ -2,6 +2,15 @@ require 'minder/config'
 require 'minder/pomodoro_runner'
 require 'minder/task_recorder'
 require 'minder/scene'
+require 'minder/database'
+
+require 'active_support'
+
+LOCATION = "sqlite://#{ENV['HOME']}/.minder/database.sqlite3"
+ROM.setup(:sql, LOCATION)
+
+require 'minder/task_mapper'
+require 'minder/tasks'
 
 require 'curses'
 require 'fileutils'

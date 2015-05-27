@@ -3,13 +3,14 @@ require 'fileutils'
 
 module Minder
   class TaskRecorder
-    attr_accessor :tasks,
-                  :lines
+    attr_accessor :lines
 
     attr_reader :search_results,
-                :unfiltered_tasks
+                :database,
+                :tasks
 
     def initialize
+      @database = Database.new
       @selected_task_index = 0
       @selected_search_result = 0
       @search_results = []
@@ -23,21 +24,11 @@ module Minder
     end
 
     def tasks
-      @tasks ||= build_filtered_tasks
+      @tasks ||= fetch_filtered_tasks
     end
 
-    def build_filtered_tasks
-      build_tasks.select do |task|
-        task.description.downcase.include?(@filter.downcase)
-      end
-    end
-
-    def unfiltered_tasks
-      @unfiltered_tasks ||= build_tasks
-    end
-
-    def build_tasks
-      lines.map { |task| Task.new(description: task) }
+    def fetch_filtered_tasks
+      database.tasks_filtered_by(@filter)
     end
 
     def tasks?
@@ -78,7 +69,6 @@ module Minder
     def delete_task
       lines.delete_at(selected_task_index)
       @tasks = nil
-      @unfiltered_tasks = nil
       write_file_with_backup
       reload
 
@@ -88,7 +78,6 @@ module Minder
     def reload
       self.lines = File.read(DOING_FILE).strip.split("\n")
       @tasks = nil
-      @unfiltered_tasks = nil
     end
 
     def complete_task
