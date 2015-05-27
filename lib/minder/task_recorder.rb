@@ -3,13 +3,14 @@ require 'fileutils'
 
 module Minder
   class TaskRecorder
-    attr_accessor :tasks,
-                  :lines
+    attr_accessor :lines
 
     attr_reader :search_results,
-                :unfiltered_tasks
+                :database,
+                :tasks
 
-    def initialize
+    def initialize(database:)
+      @database = database
       @selected_task_index = 0
       @selected_search_result = 0
       @search_results = []
@@ -23,21 +24,15 @@ module Minder
     end
 
     def tasks
-      @tasks ||= build_filtered_tasks
-    end
-
-    def build_filtered_tasks
-      build_tasks.select do |task|
-        task.description.downcase.include?(@filter.downcase)
-      end
+      @tasks ||= fetch_filtered_tasks
     end
 
     def unfiltered_tasks
-      @unfiltered_tasks ||= build_tasks
+      database.tasks
     end
 
-    def build_tasks
-      lines.map { |task| Task.new(description: task) }
+    def fetch_filtered_tasks
+      database.tasks_filtered_by(@filter)
     end
 
     def tasks?
@@ -48,6 +43,7 @@ module Minder
       File.open(DOING_FILE, 'a') do |file|
         file.write("#{task}\n")
       end
+      database.add_task(task)
       reload
     end
 
@@ -76,9 +72,8 @@ module Minder
     end
 
     def delete_task
-      lines.delete_at(selected_task_index)
+      database.delete_task(selected_task)
       @tasks = nil
-      @unfiltered_tasks = nil
       write_file_with_backup
       reload
 
@@ -88,7 +83,6 @@ module Minder
     def reload
       self.lines = File.read(DOING_FILE).strip.split("\n")
       @tasks = nil
-      @unfiltered_tasks = nil
     end
 
     def complete_task
@@ -119,14 +113,14 @@ module Minder
     end
 
     def start_task
-      selected_task.start
+      database.start_task(selected_task)
       write_file_with_backup
       add_to_done_file("Started: #{selected_task.description}")
       reload
     end
 
     def unstart_task
-      selected_task.unstart
+      database.unstart_task(selected_task)
       write_file_with_backup
       add_to_done_file("Un-started: #{selected_task.description}")
       reload

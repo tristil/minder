@@ -5,6 +5,9 @@ module Minder
   ASSETS_LOCATION = File.expand_path(File.dirname(__FILE__) + '/../assets')
   DOING_FILE = File.join(ENV["HOME"], '.minder', 'doing.txt')
   DONE_FILE = File.join(ENV["HOME"], '.minder', 'done.txt')
+  MIGRATIONS_PATH = File.expand_path(File.dirname(__FILE__) + '/../')
+  DATABASE_LOCATION = "#{ENV['HOME']}/.minder/database.sqlite3"
+
   def self.formatted_time(seconds)
     minutes = (seconds / 60).to_i
     seconds = (seconds % 60).round

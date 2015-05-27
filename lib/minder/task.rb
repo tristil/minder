@@ -4,21 +4,14 @@ module Minder
   class Task
     include Virtus.model
 
+    attribute :id, Integer
     attribute :description, String
-    attribute :selected, Boolean, default: false
-    attribute :started, Boolean, default: false
-
-    def start
-      self.started = true
-    end
-
-    def unstart
-      self.description.gsub!(/\* /, '')
-      self.started = false
-    end
+    attribute :selected, Boolean
+    attribute :started_at, DateTime
+    attribute :completed_at, DateTime
 
     def started?
-      super || description =~ /\* /
+      !!started_at
     end
 
     def to_s

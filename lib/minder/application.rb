@@ -2,7 +2,7 @@ require 'minder/config'
 require 'minder/pomodoro_runner'
 require 'minder/task_recorder'
 require 'minder/scene'
-
+require 'active_support'
 require 'curses'
 require 'fileutils'
 
@@ -17,7 +17,11 @@ module Minder
                   :message_frame,
                   :quick_add_frame
 
-    def initialize(config: Minder::Config.new(CONFIG_LOCATION))
+    attr_reader :database
+
+    def initialize(config: Minder::Config.new(CONFIG_LOCATION),
+                   database: Database.new)
+      @database = database
       self.config = config
       config.load
       FileUtils.mkdir_p(File.join(ENV['HOME'], '.minder'))
@@ -95,7 +99,7 @@ module Minder
     end
 
     def task_recorder
-      @task_recorder ||= TaskRecorder.new
+      @task_recorder ||= TaskRecorder.new(database: database)
     end
 
     def handle_event(event, data = {})
