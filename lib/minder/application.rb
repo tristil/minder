@@ -107,9 +107,9 @@ module Minder
 
       case event
       when :started_work
-        message_frame.hide
+        message_frame.minimize
       when :completed_work
-        message_frame.unhide
+        message_frame.unminimize
       when :continue
         pomodoro_runner.continue
       when :editor

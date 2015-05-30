@@ -7,14 +7,35 @@ module Minder
     def initialize(*)
       super
       self.height = desired_height
+      @minimized = false
+    end
+
+    def minimize
+      @minimized = true
+    end
+
+    def unminimize
+      @minimized = false
+    end
+
+    def minimized?
+      @minimized
     end
 
     def template
-      if task_manager.tasks?
+      if minimized?
+        minimized_message
+      elsif task_manager.tasks?
         doing_message
       else
         prompt_message
       end
+    end
+
+    def minimized_message
+<<-TEXT
+Space to see tasks
+TEXT
     end
 
     def prompt_message
@@ -53,6 +74,8 @@ TEXT
     end
 
     def desired_height
+      return 3 if minimized?
+
       header_text_lines.length + tasks_text_lines.length + 3
     end
 
@@ -70,7 +93,11 @@ TEXT
     end
 
     def set_cursor_position
-      window.setpos(3 + task_manager.selected_task_index - scroll_offset, 3)
+      if minimized?
+        window.setpos(1, 20)
+      else
+        window.setpos(3 + task_manager.selected_task_index - scroll_offset, 3)
+      end
     end
 
     def scroll_offset
@@ -94,6 +121,9 @@ TEXT
       when 'e' then :editor
       when '?' then :help
       when '/' then :search
+      when 'm'
+        minimize
+        :redraw
       when 'n' then :next_search
       when 'N' then :previous_search
       when 'f' then :open_filter
@@ -103,6 +133,11 @@ TEXT
         if @keypress_memory == ['g', 'g']
           @keypress_memory = []
           :select_first_task
+        end
+      when ' '
+        if minimized?
+          unminimize
+          :redraw
         end
       end
 
