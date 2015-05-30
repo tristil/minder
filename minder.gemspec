@@ -16,12 +16,14 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 
-  spec.add_runtime_dependency 'curses', '~> 1.0.0', '>= 1.0.1'
-  spec.add_runtime_dependency 'virtus', '~> 1.0.0', '>= 1.0.5'
-  spec.add_runtime_dependency 'rom', '~> 0.7.0', '>= 0.7'
-  spec.add_runtime_dependency 'rom-sql', '~> 0.5.0', '>= 0.5'
-  spec.add_runtime_dependency 'sqlite3'
-  spec.add_runtime_dependency 'activesupport'
+  spec.required_ruby_version = '>= 2.1'
+
+  spec.add_runtime_dependency 'curses', '~> 1.0', '>= 1.0.1'
+  spec.add_runtime_dependency 'virtus', '~> 1.0', '>= 1.0.5'
+  spec.add_runtime_dependency 'rom', '~> 0.7', '>= 0.7'
+  spec.add_runtime_dependency 'rom-sql', '~> 0.5', '>= 0.5'
+  spec.add_runtime_dependency 'sqlite3', '~> 1.3', '>= 1.3.10'
+  spec.add_runtime_dependency 'activesupport', '~> 4.2', '>= 4.2.1'
 
   spec.add_development_dependency "bundler", '~> 1'
   spec.add_development_dependency "rspec", '~> 3.2', '>= 3.2'
