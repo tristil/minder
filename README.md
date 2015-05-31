@@ -1,3 +1,6 @@
+[![Gem
+Version](https://badge.fury.io/rb/minder.svg)](http://badge.fury.io/rb/minder)
+
 ## What is it?
 
 This is a CLI-based tool that combines the best of several different
@@ -11,40 +14,84 @@ At present it has these features:
   soothing sounds of a "pomodoro" kitchen timer at the beginning and end of a
   break.
 - A todo log that allows starting, unstarting and completing a task.
-- Stores a simple text log of task and pomodoro activity (in `~/.minder/done.txt`).
+- Ability to filter tasks by a string (useful for focusing on [Getting Things
+  Done](http://gettingthingsdone.com/)-style labels like @context and +project.
+- Ability to jump through tasks using a Vim-like search.
 
 Plans for the future include:
 
-- Filtering by [Getting Things Done](http://gettingthingsdone.com/)-style labels (like @context, +project, and #tag)
 - Integration with a website blacklist tool like
   [SelfControl](https://github.com/SelfControlApp/selfcontrol/).
 - Keeping track of the number of pomodoros performed during a day.
 - Desktop notifications for Linux and MacOS
-- Prompts to summarize plans for the day and day's end progress, inspired by [Day One](http://dayoneapp.com/).
+- Prompts to summarize plans for the day and day's end progress, inspired by
+  [Day One](http://dayoneapp.com/).
 
 Audio files are from https://github.com/niftylettuce/pomodoro-timer
 
+## Installation
+
+You must have a version of Ruby that is 2.1 or higher.
+
+Install with
+
+``` bash
+gem install minder
+```
+
 ## Usage
 
-Minder is designed to be run in a separate pane in a Tmux session (or in a split 
-inside a program like iTerm2). The tasks list will scroll if there is not enough 
-room to display all tasks.
+### Command line
+Start the program by running `minder`
 
-There are three sections. You can switch between sections by pressing Tab. The
-commands for each section only work when the section is focused.
+### Interface
 
-- The Pomodoro timer section. Press space to begin the next period. Press 'e'
-  to edit the whole tasks list in your `$EDITOR`.
-- The Tasks section. This section disappears during a Pomodoro period to avoid
-  distraction.
-  - Press 'd' to mark a task as done.
-  - Press 'x' to delete a task.
-  - Press 's' to start a task.
-  - Press 'u' to un-start a task.
-  - Press 'j' to do down the list and 'k' to go up.
-  - Press 'gg' to go to top of task list and 'G' to go to bottom of list.
-- The Quick Add Task section. Enter text here to add a task to the tasks list.
-  at any time.
+Minder is designed to be run in a separate pane in a Tmux session (or in
+a split inside a program like iTerm2). The tasks list will scroll if there is
+not enough room to display all tasks.
+
+The interface is organized into frames. You can switch between frames by
+pressing Tab. The commands for each frame only work when the frame is focused.
+
+- The Pomodoro timer frame. Press space to begin the next period.
+- The Tasks frame. This frame minimizes during a Pomodoro period to avoid
+  distraction. The commands for interacting with the message frame are based on
+  Vim keystrokes:
+  - `/` to open a dialog to search within the list of tasks.
+  - `d` to mark a task as done.
+  - `e` to edit the whole tasks list in your `$EDITOR`.
+  - `f` to open a dialog to filter the list of tasks.
+  - `gg` to go to top of task list and `G` to go to bottom of list.
+  - `j` to do down the list and `k` to go up.
+  - `m` to minimize the tasks frame.
+  - `n` to go to next search result and `N` to go to previous search result.
+  - `s` to start a task.
+  - `u` to un-start a task. 
+  - `x` to delete a task.
+- The Quick Add Task frame. Enter text here to add a task to the tasks list at
+  any time.
+
+### Data
+
+The tasks are stored in an sqlite3 file that by default is located at
+`~/.minder/database.sqlite3`. 
+
+Minder also generates a couple text files as a form of backup in case the
+sqlite file gets corrupted: `~/.minder/doing.txt` and `~/.minder/done.txt`
+
+## Design notes
+
+This program is intentionally idiosyncratic. It is designed for a particular
+workflow and set of use cases that make sense to me. Specifically it is
+designed for someone who works in a maximized terminal all day, using Vim
+keybindings for both text editing and for moving between Vim splits and Tmux
+panes (using the excellent
+[vim-tmux-navigator](https://github.com/christoomey/vim-tmux-navigator)). The
+main goal is to avoid switching to a GUI program or opening a website in order
+to add a task or see the Pomodoro status.
+
+If you do find this program useful feel free to make feature requests or better
+yet open pull requests.
 
 ## License
 
