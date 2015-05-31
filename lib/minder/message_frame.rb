@@ -76,15 +76,20 @@ TEXT
     def desired_height
       return 3 if minimized?
 
+      # TODO: figure out what this magic 3 number is
       header_text_lines.length + tasks_text_lines.length + 3
     end
 
     def allocated_tasks_height
-      height - header_text_lines.length
+      height - header_text_lines.length - 3
     end
 
     def offset_tasks_text
-      tasks_text_lines[scroll_offset..(allocated_tasks_height + scroll_offset - 4)].join("\n")
+      tasks_text_lines[visible_tasks_range].join("\n")
+    end
+
+    def visible_tasks_range
+      (scroll_offset..(allocated_tasks_height + scroll_offset - 1))
     end
 
     def doing_message
@@ -100,10 +105,14 @@ TEXT
       end
     end
 
+    def total_tasks_height
+      task_manager.tasks.length
+    end
+
     def scroll_offset
-      position = task_manager.selected_task_index + 5
-      if height - position < 0
-        (height - position).abs
+      position = task_manager.selected_task_index + 1
+      if position > allocated_tasks_height
+        position - allocated_tasks_height
       else
         0
       end
@@ -137,6 +146,7 @@ TEXT
       when ' '
         if minimized?
           unminimize
+          self.height = 5 # TODO: this is hacky, to avoid an exception
           :redraw
         end
       end
