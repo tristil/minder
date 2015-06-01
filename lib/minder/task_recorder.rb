@@ -21,6 +21,7 @@ module Minder
     def filter(text)
       @tasks = nil
       @filter = text
+      @selected_task_index = 0
     end
 
     def tasks
