@@ -1,6 +1,8 @@
 [![Gem
 Version](https://badge.fury.io/rb/minder.svg)](http://badge.fury.io/rb/minder)
 
+![screencast GIF](website/minder.gif)
+
 ## What is it?
 
 This is a CLI-based tool that combines the best of several different

@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
   spec.summary       = %q{Combines a Pomodoro Technique runner with GTD-style task backlogs and Day One-style prompts."}
   spec.homepage      = "http://github.com/tristil/minder"
 
-  spec.files         = `git ls-files`.split($/)
+  spec.files         = `git ls-files`.split($/).reject { |file| file =~ /website/ }
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
