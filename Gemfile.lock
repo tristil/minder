@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    minder (0.2)
+    minder (0.2.1)
       activesupport (~> 4.2, >= 4.2.1)
       curses (~> 1.0, >= 1.0.1)
       rom (~> 0.7, >= 0.7)

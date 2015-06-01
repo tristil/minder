@@ -16,6 +16,7 @@ module Minder
 
     def unminimize
       @minimized = false
+      self.height = desired_height
     end
 
     def minimized?
@@ -146,7 +147,6 @@ TEXT
       when ' '
         if minimized?
           unminimize
-          self.height = 5 # TODO: this is hacky, to avoid an exception
           :redraw
         end
       end
