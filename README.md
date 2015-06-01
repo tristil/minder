@@ -61,7 +61,7 @@ pressing Tab. The commands for each frame only work when the frame is focused.
   Vim keystrokes:
   - `/` to open a dialog to search within the list of tasks.
   - `d` to mark a task as done.
-  - `e` to edit the whole tasks list in your `$EDITOR`.
+  - ~~`e` to edit the whole tasks list in your `$EDITOR`~~ (this is broken atm).
   - `f` to open a dialog to filter the list of tasks.
   - `gg` to go to top of task list and `G` to go to bottom of list.
   - `j` to do down the list and `k` to go up.
