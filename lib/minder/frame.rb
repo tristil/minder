@@ -35,6 +35,7 @@ module Minder
       self.left = left
 
       self.window = build_window
+      window.keypad(true)
       self.lines = []
     end
 

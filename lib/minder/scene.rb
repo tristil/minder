@@ -15,6 +15,7 @@ module Minder
     end
 
     def setup
+      Curses.ESCDELAY = 0
       Curses.noecho
       Curses.init_screen
       Curses.timeout = 0

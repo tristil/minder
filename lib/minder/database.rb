@@ -38,10 +38,14 @@ class Database
   end
 
   def start_task(task)
-    rom.command(:tasks).update.by_id(task.id).call(started_at: Time.now)
+    update_task(task, started_at: Time.now)
   end
 
   def unstart_task(task)
-    rom.command(:tasks).update.by_id(task.id).call(started_at: nil)
+    update_task(task, started_at: nil)
+  end
+
+  def update_task(task, options = {})
+    rom.command(:tasks).update.by_id(task.id).call(options)
   end
 end

@@ -10,10 +10,11 @@ Commands:   any key to dismiss
 (u) un-start task
 (d) mark task as done
 (x) delete task
-(e) open tasks in text editor
+(e) edit task
 (G) go to bottom of list
 (gg) go to top of list
 (/) Search among tasks
+(m) minimize messages frame
 (n) Next search result
 (N) Previous search result
 (?) to view this text

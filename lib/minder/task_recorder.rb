@@ -40,6 +40,10 @@ module Minder
       !tasks.empty?
     end
 
+    def update_task(task, options = {})
+      database.update_task(task, options)
+    end
+
     def add_task(task)
       File.open(DOING_FILE, 'a') do |file|
         file.write("#{task}\n")

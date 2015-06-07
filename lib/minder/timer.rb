@@ -5,7 +5,7 @@ module Minder
     attr_accessor :seconds,
                   :start_time
 
-    def initialize(seconds: DEFAULT_WORK_PERIOD)
+    def initialize(seconds: DEFAULT_WORK_PERIOD * 60)
       self.seconds = seconds
     end
 

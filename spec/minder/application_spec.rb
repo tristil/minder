@@ -49,7 +49,7 @@ describe Minder::Application do
       expect(application).to have_received(:system).with('stty -raw echo')
       expect(STDIN).to have_received(:getc).with('stty -raw echo')
       expect(pomodoro_runner).to have_received(:next_action)
-      expect(interval).to receive(:)
+      expect(interval).to receive(:blah)
     end
   end
 end
