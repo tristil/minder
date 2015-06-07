@@ -22,11 +22,11 @@ class Database
   end
 
   def tasks
-    rom.relation(:tasks).as(:entity).to_a
+    rom.relation(:tasks).active.as(:entity).to_a
   end
 
   def tasks_filtered_by(text)
-    rom.relation(:tasks).as(:entity).filtered_by(text).to_a
+    rom.relation(:tasks).active.as(:entity).filtered_by(text).to_a
   end
 
   def add_task(description)
@@ -35,6 +35,10 @@ class Database
 
   def delete_task(task)
     rom.command(:tasks).delete.by_id(task.id).call
+  end
+
+  def complete_task(task)
+    update_task(task, completed_at: Time.now)
   end
 
   def start_task(task)
