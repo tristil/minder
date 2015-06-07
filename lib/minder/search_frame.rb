@@ -35,7 +35,7 @@ TEXT
       when 27
         changed
         notify_observers(:escape_search)
-      when 127
+      when Curses::Key::BACKSPACE
         @search_string.chop!
         refresh
       when 10
