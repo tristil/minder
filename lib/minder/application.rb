@@ -1,6 +1,6 @@
 require 'minder/config'
 require 'minder/pomodoro_runner'
-require 'minder/task_recorder'
+require 'minder/task_manager'
 require 'minder/scene'
 require 'active_support'
 require 'curses'
@@ -39,7 +39,7 @@ module Minder
       self.scene = Scene.new
       scene.setup
 
-      options = { pomodoro_runner: pomodoro_runner, task_manager: task_recorder  }
+      options = { pomodoro_runner: pomodoro_runner, task_manager: task_manager  }
 
       self.pomodoro_frame = PomodoroFrame.new(options)
       self.help_frame = HelpFrame.new(options)
@@ -98,8 +98,8 @@ module Minder
         long_break_duration: config.long_break_duration)
     end
 
-    def task_recorder
-      @task_recorder ||= TaskRecorder.new(database: database)
+    def task_manager
+      @task_manager ||= TaskManager.new(database: database)
     end
 
     def handle_event(event, data = {})
@@ -114,27 +114,27 @@ module Minder
         pomodoro_runner.continue
       when :editor
         `$EDITOR ~/.minder/doing.txt`
-        task_recorder.reload
+        task_manager.reload
       when :add_task
-        task_recorder.add_task(data[:task])
+        task_manager.add_task(data[:task])
       when :switch_focus
         scene.switch_focus
       when :select_next_task
-        task_recorder.select_next_task
+        task_manager.select_next_task
       when :select_previous_task
-        task_recorder.select_previous_task
+        task_manager.select_previous_task
       when :delete_task
-        task_recorder.delete_task
+        task_manager.delete_task
       when :complete_task
-        task_recorder.complete_task
+        task_manager.complete_task
       when :start_task
-        task_recorder.start_task
+        task_manager.start_task
       when :unstart_task
-        task_recorder.unstart_task
+        task_manager.unstart_task
       when :select_last_task
-        task_recorder.select_last_task
+        task_manager.select_last_task
       when :select_first_task
-        task_recorder.select_first_task
+        task_manager.select_first_task
       when :help
         message_frame.hide
         help_frame.unhide
@@ -150,7 +150,7 @@ module Minder
         filter_frame.hide if data[:text] == ''
         scene.focus_frame(message_frame)
       when :update_filter
-        task_recorder.filter(data[:text])
+        task_manager.filter(data[:text])
       when :search
         search_frame.unhide
         search_frame.begin_search
@@ -158,12 +158,12 @@ module Minder
       when :submit_search
         search_frame.hide
         scene.focus_frame(message_frame)
-        task_recorder.search(data[:text])
-        task_recorder.select_search_result
+        task_manager.search(data[:text])
+        task_manager.select_search_result
       when :next_search
-        task_recorder.next_search
+        task_manager.next_search
       when :previous_search
-        task_recorder.previous_search
+        task_manager.previous_search
       when :escape_search
         search_frame.hide
         scene.focus_frame(message_frame)

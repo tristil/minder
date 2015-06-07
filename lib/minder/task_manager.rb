@@ -2,7 +2,7 @@ require 'minder/task'
 require 'fileutils'
 
 module Minder
-  class TaskRecorder
+  class TaskManager
     attr_accessor :lines
 
     attr_reader :search_results,
@@ -92,7 +92,10 @@ module Minder
 
     def complete_task
       task = selected_task
-      delete_task
+      database.complete_task(task)
+      write_file_with_backup
+      reload
+      select_previous_task
       add_to_done_file("Finished: #{task.description}")
     end
 
