@@ -1,4 +1,3 @@
-require 'fileutils'
 require "sqlite3"
 require 'rom'
 require 'rom-sql'
@@ -9,9 +8,9 @@ class Database
   def initialize
     FileUtils.mkdir_p(File.dirname(Minder::DATABASE_LOCATION))
     ROM.setup(:sql, "sqlite://#{Minder::DATABASE_LOCATION}")
-    require 'minder/task'
-    require 'minder/task_mapper'
-    require 'minder/tasks'
+    require 'minder/tasks/task'
+    require 'minder/database/task_mapper'
+    require 'minder/database/tasks'
 
     ROM.commands(:tasks) do
       define(:delete)

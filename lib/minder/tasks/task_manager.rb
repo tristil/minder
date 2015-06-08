@@ -1,5 +1,4 @@
-require 'minder/task'
-require 'fileutils'
+require 'minder/tasks/task'
 
 module Minder
   class TaskManager

@@ -1,4 +1,4 @@
-require 'minder/frame'
+require 'minder/cli/frame'
 
 module Minder
   class PomodoroFrame < Frame

@@ -1,3 +1,5 @@
+require 'observer'
+
 module Minder
   class TaskEditor
     include Observable

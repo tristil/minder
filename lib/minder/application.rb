@@ -1,10 +1,9 @@
 require 'minder/config'
-require 'minder/pomodoro_runner'
-require 'minder/task_manager'
-require 'minder/scene'
-require 'active_support'
+require 'minder/pomodoro/pomodoro_runner'
+require 'minder/tasks/task_manager'
+require 'minder/cli/scene'
+
 require 'curses'
-require 'fileutils'
 
 module Minder
   class Application

@@ -1,5 +1,5 @@
-require 'minder/frame'
-require 'minder/task_editor'
+require 'minder/cli/frame'
+require 'minder/cli/task_editor'
 
 module Minder
   class MessageFrame < Frame

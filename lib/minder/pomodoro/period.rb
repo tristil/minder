@@ -1,4 +1,4 @@
-require 'minder/timer'
+require 'minder/pomodoro/timer'
 
 module Minder
   class Period

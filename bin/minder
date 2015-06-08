@@ -1,12 +1,12 @@
 #!/usr/bin/env ruby
 
 require 'minder'
-require 'minder/database'
+require 'minder/database/database'
 database = Database.new
 DB = database.rom.repositories[:default]
 
 require 'minder/application'
-require 'minder/database_migrator'
+require 'minder/database/database_migrator'
 
 migrator = Minder::DatabaseMigrator.new(database: database)
 migrator.run

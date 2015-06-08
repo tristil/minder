@@ -1,5 +1,3 @@
-require 'minder'
-
 module Minder
   class Timer
     attr_accessor :seconds,

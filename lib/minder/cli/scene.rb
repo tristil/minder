@@ -1,10 +1,10 @@
 require 'ostruct'
-require 'minder/help_frame'
-require 'minder/search_frame'
-require 'minder/filter_frame'
-require 'minder/pomodoro_frame'
-require 'minder/message_frame'
-require 'minder/quick_add_frame'
+require 'minder/cli/help_frame'
+require 'minder/cli/search_frame'
+require 'minder/cli/filter_frame'
+require 'minder/cli/pomodoro_frame'
+require 'minder/cli/message_frame'
+require 'minder/cli/quick_add_frame'
 
 module Minder
   class Scene

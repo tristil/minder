@@ -1,8 +1,8 @@
 require 'observer'
 
-require 'minder/pomodoro_period'
-require 'minder/break_period'
-require 'minder/idle_period'
+require 'minder/pomodoro/pomodoro_period'
+require 'minder/pomodoro/break_period'
+require 'minder/pomodoro/idle_period'
 
 module Minder
   class PomodoroRunner

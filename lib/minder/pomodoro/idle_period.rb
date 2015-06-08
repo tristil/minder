@@ -1,4 +1,4 @@
-require 'minder/period'
+require 'minder/pomodoro/period'
 
 module Minder
   class IdlePeriod < Period

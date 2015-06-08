@@ -1,3 +1,10 @@
+require 'minder/application'
+require 'minder/config'
+require 'minder/version'
+
+require 'active_support'
+require 'fileutils'
+
 module Minder
   DEFAULT_WORK_PERIOD = 25
   DEFAULT_BREAK_PERIOD = 5

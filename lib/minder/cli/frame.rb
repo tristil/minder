@@ -1,5 +1,6 @@
 require 'observer'
 require 'erb'
+
 module Minder
   class Frame
     include Observable
