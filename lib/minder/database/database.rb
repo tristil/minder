@@ -89,7 +89,7 @@ class Database
   end
 
   def periods
-    rom.relation(:tasks).active.as(:entity).to_a
+    rom.relation(:periods).as(:entity).to_a
   end
 
   def pomodoros_today

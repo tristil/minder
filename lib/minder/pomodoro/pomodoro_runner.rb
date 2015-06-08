@@ -79,5 +79,9 @@ module Minder
     def pomodoros_today
       @pomodoros_today ||= database.pomodoros_today
     end
+
+    def periods
+      database.periods
+    end
   end
 end

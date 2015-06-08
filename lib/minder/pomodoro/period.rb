@@ -9,7 +9,7 @@ module Minder
     attribute :started_at, DateTime
     attribute :ended_at, DateTime
     attribute :duration_in_seconds, Integer, default: 0
-    attribute :completed, Boolean
+    attribute :completed, Boolean, default: false
 
     def duration_in_minutes=(minutes)
       self.duration_in_seconds = minutes.to_i * 60
