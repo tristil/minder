@@ -24,6 +24,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'rom-sql', '~> 0.5', '>= 0.5'
   spec.add_runtime_dependency 'sqlite3', '~> 1.3', '>= 1.3.10'
   spec.add_runtime_dependency 'activesupport', '~> 4.2', '>= 4.2.1'
+  spec.add_runtime_dependency 'emoji'
 
   spec.add_development_dependency "bundler", '~> 1'
   spec.add_development_dependency "rspec", '~> 3.2', '>= 3.2'

@@ -1,10 +1,3 @@
-require 'minder/application'
-require 'minder/config'
-require 'minder/version'
-
-require 'active_support'
-require 'fileutils'
-
 module Minder
   DEFAULT_WORK_PERIOD = 25
   DEFAULT_BREAK_PERIOD = 5
@@ -14,6 +7,14 @@ module Minder
   DONE_FILE = File.join(ENV["HOME"], '.minder', 'done.txt')
   MIGRATIONS_PATH = File.expand_path(File.dirname(__FILE__) + '/../')
   DATABASE_LOCATION = "#{ENV['HOME']}/.minder/database.sqlite3"
+  LOG_LOCATION = "#{ENV['HOME']}/.minder/info.log"
+
+  require 'minder/application'
+  require 'minder/config'
+  require 'minder/version'
+
+  require 'active_support'
+  require 'fileutils'
 
   def self.formatted_time(seconds)
     minutes = (seconds / 60).to_i

@@ -1,10 +1,11 @@
 require 'minder/cli/frame'
+require 'emoji'
 
 module Minder
   class PomodoroFrame < Frame
     def template
       text = <<-TEXT
-<%= period.title %>
+<%= period.title %>  #{pomodoros}
 TEXT
 
       if period.message
@@ -25,7 +26,7 @@ TEXT
     end
 
     def period
-      pomodoro_runner.current_action
+      pomodoro_runner.current_period
     end
 
     def handle_char_keypress(key)
@@ -48,6 +49,13 @@ TEXT
 
     def set_cursor_position
       window.setpos(1, lines[0].strip.length + 2)
+    end
+
+    def pomodoros
+      index = Emoji::Index.new
+      pomodoro_runner.pomodoros_today.map do |pomodoro|
+        "\xF0\x9F\x8D\x85 "
+      end.join
     end
   end
 end

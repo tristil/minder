@@ -11,7 +11,11 @@ module Minder
     end
 
     def start!
-      # noop
+      self.started_at = Time.now
+    end
+
+    def complete!
+      self.ended_at = Time.now
     end
 
     def elapsed?
@@ -20,6 +24,10 @@ module Minder
 
     def completed?
       true
+    end
+
+    def type
+      'idle'
     end
   end
 end

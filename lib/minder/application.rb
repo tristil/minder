@@ -94,7 +94,8 @@ module Minder
       @runner ||= PomodoroRunner.new(
         work_duration: config.work_duration,
         short_break_duration: config.short_break_duration,
-        long_break_duration: config.long_break_duration)
+        long_break_duration: config.long_break_duration,
+        database: database)
     end
 
     def task_manager

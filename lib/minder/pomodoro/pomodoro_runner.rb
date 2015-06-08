@@ -1,6 +1,6 @@
 require 'observer'
 
-require 'minder/pomodoro/pomodoro_period'
+require 'minder/pomodoro/work_period'
 require 'minder/pomodoro/break_period'
 require 'minder/pomodoro/idle_period'
 
@@ -10,60 +10,74 @@ module Minder
 
     attr_accessor :work_duration,
                   :short_break_duration,
-                  :long_break_duration
+                  :long_break_duration,
+                  :database
 
-    attr_reader :action_count,
-                :current_action
+    attr_reader :period_count,
+                :current_period
 
     def initialize(**options)
       self.work_duration = options.fetch(:work_duration)
       self.short_break_duration = options.fetch(:short_break_duration)
       self.long_break_duration = options.fetch(:long_break_duration)
-      @action_count = 0
-      @current_action = IdlePeriod.new
+      self.database = options.fetch(:database)
+      @period_count = 0
+      current_period = IdlePeriod.new
+      current_period.start!
+      database.add_period(current_period)
+      @current_period = database.last_period
     end
 
     def tick
-      return if !current_action.elapsed? || current_action.completed?
+      return if !current_period.elapsed? || current_period.completed?
 
-      old_action = current_action
-      current_action.complete!
-      @current_action = IdlePeriod.new
+      old_period = current_period
+      @current_period = IdlePeriod.new
 
       changed
-      if old_action.is_a?(PomodoroPeriod)
+      if old_period.is_a?(WorkPeriod)
         notify_observers(:completed_work)
-      elsif old_action.is_a?(BreakPeriod)
+      elsif old_period.is_a?(BreakPeriod)
         notify_observers(:completed_break)
       end
     end
 
     def continue
-      return unless current_action.elapsed?
+      return unless current_period.elapsed?
 
-      advance_action
-      current_action.start!
+      current_period.complete!
+      @pomodoros = nil
+      database.complete_period(current_period)
+
+      advance_period
+      current_period.start!
+      database.add_period(current_period)
+      @current_period = database.last_period
     end
 
-    def advance_action
-      @action_count += 1
+    def advance_period
+      @period_count += 1
       changed
 
-      if action_count.odd?
+      if period_count.odd?
         notify_observers(:started_work)
-        @current_action = PomodoroPeriod.new(minutes: work_duration)
+        @current_period = WorkPeriod.new(duration_in_minutes: work_duration)
       else
         notify_observers(:started_break)
-        @current_action = BreakPeriod.new(minutes: break_duration)
+        @current_period = BreakPeriod.new(duration_in_minutes: break_duration)
       end
     end
 
     def break_duration
-      if action_count % 8 == 0
+      if period_count % 8 == 0
         long_break_duration
       else
         short_break_duration
       end
+    end
+
+    def pomodoros_today
+      @pomodoros_today ||= database.pomodoros_today
     end
   end
 end

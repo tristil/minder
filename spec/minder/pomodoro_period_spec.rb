@@ -1,11 +1,11 @@
-require 'minder/pomodoro_period'
+require 'minder/work_period'
 
-describe Minder::PomodoroPeriod do
+describe Minder::WorkPeriod do
   describe '#run' do
     let(:timer) { instance_spy(Minder::Timer) }
 
     it 'runs the pomodoro' do
-      pomodoro = described_class.new(minutes: 5)
+      pomodoro = described_class.new(duration_in_minutes: 5)
 
       allow(Minder::Timer).to receive(:new)
         .with(seconds: 300)

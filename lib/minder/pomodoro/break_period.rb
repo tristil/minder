@@ -2,12 +2,14 @@ require 'minder/pomodoro/period'
 
 module Minder
   class BreakPeriod < Period
-    def initialize(minutes: DEFAULT_WORK_PERIOD)
-      super
-    end
+    attribute :duration_in_seconds, Integer, default: DEFAULT_BREAK_PERIOD * 60
 
     def title
       "Break period"
+    end
+
+    def type
+      'break'
     end
   end
 end
