@@ -1,5 +1,4 @@
 require 'minder/cli/frame'
-require 'emoji'
 
 module Minder
   class PomodoroFrame < Frame
@@ -52,7 +51,6 @@ TEXT
     end
 
     def pomodoros
-      index = Emoji::Index.new
       pomodoro_runner.pomodoros_today.map do |pomodoro|
         "\xF0\x9F\x8D\x85 "
       end.join
