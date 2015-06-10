@@ -67,6 +67,7 @@ class Database
 
   def add_period(period)
     rom.relations.periods.insert(started_at: period.started_at,
+                                 duration_in_seconds: period.duration_in_seconds,
                                  type: period.type)
   end
 
