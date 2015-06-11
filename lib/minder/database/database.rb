@@ -75,7 +75,7 @@ class Database
     require 'minder/pomodoro/work_period'
     require 'minder/pomodoro/break_period'
     require 'minder/pomodoro/idle_period'
-    data = rom.relations.periods.last
+    data = rom.relations.periods.order(:id).last
     if data[:type] == 'work'
       Minder::WorkPeriod.new(data)
     elsif data[:type] == 'break'
