@@ -31,7 +31,7 @@ TEXT
 
     def handle_non_char_keypress(key)
       case key
-      when Curses::Key::BACKSPACE
+      when *Curses::Key::BACKSPACE, 127
         self.input.chop!
         refresh
       when 10

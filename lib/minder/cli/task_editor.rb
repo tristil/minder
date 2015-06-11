@@ -40,7 +40,7 @@ module Minder
         when Curses::Key::RIGHT
           @cursor_position += 1 unless cursor_position > text.length - 1
           :redraw
-        when Curses::Key::BACKSPACE
+        when *Curses::Key::BACKSPACE, 127
           return if @cursor_position == 0
           @task.description.slice!(@cursor_position - 1)
           @cursor_position -= 1 unless cursor_position == 0

@@ -38,7 +38,7 @@ TEXT
         notify_observers(:submit_filter, { text: filter_string })
       end
 
-      @filter_string.chop! if key == Curses::Key::BACKSPACE
+      @filter_string.chop! if [Curses::Key::BACKSPACE, 127].include?(key)
 
       refresh
       changed
