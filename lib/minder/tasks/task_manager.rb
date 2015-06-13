@@ -8,7 +8,7 @@ module Minder
                 :database,
                 :tasks
 
-    def initialize(database:)
+    def initialize(database: nil)
       @database = database
       @selected_task_index = 0
       @selected_search_result = 0

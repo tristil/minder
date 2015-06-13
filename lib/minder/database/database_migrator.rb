@@ -2,7 +2,7 @@ module Minder
   class DatabaseMigrator
     attr_reader :database
 
-    def initialize(database:)
+    def initialize(database: nil)
       @database = database
     end
 
