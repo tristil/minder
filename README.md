@@ -33,7 +33,7 @@ Audio files are from https://github.com/niftylettuce/pomodoro-timer
 
 ## Installation
 
-You must have a version of Ruby that is 2.1 or higher.
+You must have a version of Ruby that is 2.0 or higher.
 
 Install with
 
