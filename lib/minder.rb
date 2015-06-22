@@ -34,7 +34,7 @@ module Minder
   end
 
   def self.pry_open(b)
-    Curses.close_screen
+    Vedeu::Terminal.restore_screen
     require 'pry'
     b.pry
   end

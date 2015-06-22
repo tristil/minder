@@ -2,6 +2,26 @@ require 'minder/cli/frame'
 
 module Minder
   class PomodoroFrame < Frame
+    def setup
+      keymap 'pomodoro' do
+        key(:up, 'k') { Vedeu.trigger(:_cursor_up_) }
+        key(:down, 'j') { Vedeu.trigger(:_cursor_down_) }
+      end
+
+      interface 'pomodoro' do
+        border { }
+        geometry do
+          height 5
+        end
+        cursor!
+        group 'main'
+      end
+    end
+
+    def view_name
+      'pomodoro'
+    end
+
     def template
       text = <<-TEXT
 <%= period.title %>  #{pomodoros}

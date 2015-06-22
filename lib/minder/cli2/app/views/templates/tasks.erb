@@ -1,0 +1,9 @@
+Tasks         ? to see commands
+
+<%- object.task_manager.tasks.each do |task| -%>
+  <%- if task.started? -%>
+-[*] <%= task %>
+  <%- else -%>
+-[ ] <%= task %>
+  <%- end -%>
+<%- end -%>

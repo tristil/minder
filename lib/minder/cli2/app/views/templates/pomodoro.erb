@@ -1,0 +1,8 @@
+<%= object.period.title %>  <%= object.pomodoros %>
+<%- if object.period.message -%>
+<%= object.period.message %>
+<%- end -%>
+
+<%- if object.task_manager.started_task -%>
+Working on: <%= object.task_manager.started_task %>
+<%- end -%>

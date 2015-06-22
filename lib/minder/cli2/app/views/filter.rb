@@ -1,7 +1,5 @@
-require 'minder/cli/frame'
-
-module Minder
-  class FilterFrame < Frame
+module Cli2
+  class FilterView < Vedeu::ApplicationView
     attr_reader :filter_string
 
     def initialize(*)
@@ -9,14 +7,21 @@ module Minder
       @filter_string = ''
     end
 
-    def desired_height
-      3
+    def render
+      Vedeu.renders do
+        template_for('filter', template('filter'), context, options)
+      end
     end
 
-    def template
-      <<-TEXT
-Filter: #{filter_string}
-TEXT
+    private
+
+    def context
+      OpenStruct.new(filter_string: filter_string)
+
+    end
+
+    def options
+      {}
     end
 
     def set_cursor_position
@@ -46,4 +51,3 @@ TEXT
     end
   end
 end
-

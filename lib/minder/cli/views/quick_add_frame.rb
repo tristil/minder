@@ -9,15 +9,28 @@ module Minder
       self.input = ''
     end
 
+    def setup
+      interface 'quick_add' do
+        border do
+          'C'
+        end
+        geometry do
+          height 3
+          y Vedeu.height - 3
+        end
+        cursor!
+        group 'main'
+      end
+    end
+
+    def view_name
+      'quick_add'
+    end
+
     def template
       <<-TEXT
 Quick add task:
 TEXT
-    end
-
-    def set_text
-      self.lines[0] += ' ' + input
-      super
     end
 
     def set_cursor_position

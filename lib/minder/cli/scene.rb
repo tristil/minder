@@ -1,11 +1,3 @@
-require 'ostruct'
-require 'minder/cli/help_frame'
-require 'minder/cli/search_frame'
-require 'minder/cli/filter_frame'
-require 'minder/cli/pomodoro_frame'
-require 'minder/cli/message_frame'
-require 'minder/cli/quick_add_frame'
-
 module Minder
   class Scene
     attr_accessor :frames
@@ -15,12 +7,11 @@ module Minder
     end
 
     def setup
-      Curses.ESCDELAY = 0
-      Curses.noecho
-      Curses.init_screen
-      Curses.timeout = 0
-      clear
-      Curses.refresh
+      frames.each(&:setup)
+      frames.each(&:show)
+
+      Vedeu.focus_by_name('pomodoro')
+      Vedeu::Launcher.new().execute!
     end
 
     def focused_frame
@@ -28,14 +19,7 @@ module Minder
     end
 
     def switch_focus
-      current_index = frames.find_index(focused_frame)
-      focused_frame.unfocus
-      next_frame = frames[current_index + 1..-1].find { |frame| !frame.hidden? }
-      if next_frame
-        next_frame.focus
-      else
-        frames[0].focus
-      end
+      Vedeu.focus_next
     end
 
     def focus_frame(frame)
@@ -81,17 +65,17 @@ module Minder
     end
 
     def main_frame
-      return if message_frame.hidden? && help_frame.hidden?
+      return if tasks_frame.hidden? && help_frame.hidden?
 
-      if message_frame.hidden?
+      if tasks_frame.hidden?
         help_frame
       else
-        message_frame
+        tasks_frame
       end
     end
 
-    def message_frame
-      @message_frame ||= frames.find { |frame| frame.is_a?(MessageFrame) }
+    def tasks_frame
+      @tasks_frame ||= frames.find { |frame| frame.is_a?(TasksFrame) }
     end
 
     def help_frame

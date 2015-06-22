@@ -3,12 +3,12 @@ require 'erb'
 
 module Minder
   class Frame
+    include Vedeu
     include Observable
 
     attr_accessor :window,
                   :min_height,
                   :height,
-                  :width,
                   :left,
                   :top,
                   :pomodoro_runner,
@@ -17,7 +17,6 @@ module Minder
 
     def initialize(**options)
       height = options.fetch(:height, 3)
-      width = options.fetch(:width, 40)
       top = options.fetch(:top, 0)
       left = options.fetch(:left, 0)
       task_manager = options.fetch(:task_manager)
@@ -31,20 +30,33 @@ module Minder
       self.min_height = height
 
       self.height = height
-      self.width = width
       self.top = top
       self.left = left
 
-      self.window = build_window
-      window.keypad(true)
       self.lines = []
+
+      Vedeu.bind(:_focus_next_) do
+        #require 'pry'
+        #binding.pry
+      end
     end
 
-    def build_window
-      Curses::Window.new(min_height, width, top, left)
+    def show
+      parse_template
+      lines_from_template = @lines
+      views do
+        view view_name do
+          lines do
+            lines_from_template.each do |l|
+              line l
+            end
+          end
+        end
+      end
     end
 
     def focus
+      Vedeu.focus_by_name(view_name)
       @focused = true
       @has_cursor = true
     end
@@ -63,11 +75,12 @@ module Minder
     end
 
     def hide
-      erase
+      Vedeu.trigger(:_hide_interface_, view_name)
       @hidden = true
     end
 
     def unhide
+      Vedeu.trigger(:_show_interface_, view_name)
       @hidden = false
     end
 
@@ -83,20 +96,8 @@ module Minder
       @has_cursor
     end
 
-    def listen
-      window.timeout = 0
-      handle_keypress(window.getch)
-    end
-
     def refresh
-      return if @hidden
-      parse_template
-      set_text
-      window_refresh
-    end
-
-    def window_refresh
-      window.refresh
+      Vedeu.update.call
     end
 
     def parse_template
@@ -104,71 +105,8 @@ module Minder
       self.lines = ERB.new(template).result(b).split("\n")
     end
 
-    def resize
-      erase
-
-      self.width = Curses.cols
-      if lines.length >= min_height - 2
-        self.height = lines.length + 2
-      else
-        self.height = min_height
-      end
-
-      window.resize(height, width)
-      window_refresh
-    end
-
-    def set_text
-      window.box(?|, ?-)
-      height.times do |index|
-        next if index >= height - 2
-        window.setpos(index + 1, 1)
-        line = lines[index]
-        if line
-          print_line(line)
-        else
-          print_line('')
-        end
-      end
-    end
-
-    def erase
-      height.times do |index|
-        window.setpos(index, 0)
-        window.addstr(' ' * width )
-      end
-      window_refresh
-    end
-
     def set_cursor_position
       window.setpos(1, 0)
-    end
-
-    def print_line(text)
-      text = text[0,width - 2]
-      remainder = width - 2 - text.length
-      window.addstr(text + ' ' * remainder)
-    end
-
-    def handle_keypress(key)
-      return unless key
-
-      if key.is_a?(Fixnum)
-        if key == 9 # tab
-          changed
-          notify_observers(:switch_focus)
-        else
-          handle_non_char_keypress(key)
-        end
-      else
-        handle_char_keypress(key)
-      end
-    end
-
-    def handle_non_char_keypress(key)
-    end
-
-    def handle_char_keypress(key)
     end
   end
 end
