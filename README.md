@@ -33,7 +33,7 @@ Audio files are from https://github.com/niftylettuce/pomodoro-timer
 
 ## Installation
 
-You must have a version of Ruby that is 2.0 or higher.
+You must have a version of Ruby that is 2.0 or higher and SQLite3.
 
 Install with
 
@@ -94,6 +94,16 @@ to add a task or see the Pomodoro status.
 
 If you do find this program useful feel free to make feature requests or better
 yet open pull requests.
+
+## Development
+
+### Ubuntu
+
+- Install the SQLite3 library:
+
+```bash
+sudo apt-get install libsqlite3-dev
+```
 
 ## License
 
