@@ -26,7 +26,7 @@ class Database
     end
 
     @rom = ROM.finalize.env
-    rom.repositories[:default].use_logger(Logger.new(Minder::LOG_LOCATION))
+    rom.gateways[:default].use_logger(Logger.new(Minder::LOG_LOCATION))
   end
 
   def tasks

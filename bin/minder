@@ -3,7 +3,7 @@
 require 'minder'
 require 'minder/database/database'
 database = Database.new
-DB = database.rom.repositories[:default]
+DB = database.rom.gateways[:default]
 
 require 'minder/application'
 require 'minder/database/database_migrator'
