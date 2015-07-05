@@ -1,0 +1,129 @@
+# This is the configuration used to check the rubocop source code.
+require:
+  - ./rubocop/cops
+  - rubocop-rspec
+
+AbcSize:
+  Max: 50
+  Exclude:
+    - spec/**/*
+    - config/**/*
+
+AccessorMethodName:
+  Enabled: false
+
+ClassLength:
+  Enabled: false
+
+ClosingParenthesisIndentation:
+  Enabled: false
+
+CyclomaticComplexity:
+  Enabled: false
+
+Date:
+  Enabled: false
+
+Delegate:
+  Enabled: false # The cop forces using the shorthand for prefixed delegation
+
+DeprecatedHashMethods:
+  Enabled: false
+
+Documentation:
+  Enabled: false
+
+EachWithObject:
+  Enabled: false
+
+Encoding:
+  Enabled: false
+
+FindEach:
+  Enabled: false
+
+GuardClause:
+  Enabled: false
+
+LineLength:
+  Enabled: false
+
+MethodLength:
+  Enabled: false
+
+ModuleLength:
+  Exclude:
+    - config/**/*
+
+MultilineOperationIndentation:
+  Enabled: false
+
+Next:
+  Enabled: false
+
+OneLineConditional:
+  Enabled: false
+
+ParameterLists:
+  Enabled: true
+  CountKeywordArgs: false
+
+PerceivedComplexity:
+  Enabled: false
+
+PercentLiteralDelimiters:
+  PreferredDelimiters:
+    '%i': '[]'
+    '%w': '[]'
+
+PredicateName:
+  Enabled: false
+
+RegexpLiteral:
+  Enabled: true
+
+RSpec/DescribeClass:
+  Enabled: false
+
+RSpec/DescribeMethod:
+  Enabled: false
+
+RSpec/FilePath:
+  Enabled: false
+
+RSpec/MultipleDescribes:
+  Enabled: false
+
+RSpec/VerifiedDoubles:
+  Enabled: false
+
+SignalException:
+  Enabled: false
+
+SingleLineBlockParams:
+  Enabled: false
+
+TimeZone:
+  Enabled: false
+
+TrivialAccessors:
+  Enabled: false
+
+UnneededPercentQ:
+  Enabled: false
+
+AllCops:
+  RunRailsCops: true
+  Include:
+    - lib/tasks/**/*.rake
+  Exclude:
+    - bin/*
+    - db/migrate/**/*
+    - db/schema.rb
+    - db_logging/schema.rb
+    - config/boot.rb
+    - config/compass.rb
+    - spec/support/tddium_*
+    - rgloader/**/*
+    - node_modules/**/*
+    - bower_components/**/*
