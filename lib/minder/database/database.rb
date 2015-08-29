@@ -8,6 +8,7 @@ class Database
 
   def initialize
     FileUtils.mkdir_p(File.dirname(Minder::DATABASE_LOCATION))
+    ROM.use :auto_registration
     ROM.setup(:sql, "sqlite://#{Minder::DATABASE_LOCATION}")
 
     require 'minder/tasks/task'
@@ -26,7 +27,7 @@ class Database
     end
 
     @rom = ROM.finalize.env
-    rom.repositories[:default].use_logger(Logger.new(Minder::LOG_LOCATION))
+    rom.gateways[:default].use_logger(Logger.new(Minder::LOG_LOCATION))
   end
 
   def tasks

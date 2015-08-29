@@ -18,20 +18,20 @@ Gem::Specification.new do |spec|
 
   spec.required_ruby_version = '>= 2.0'
 
-  spec.add_runtime_dependency 'curses', '~> 1.0', '>= 1.0.1'
-  spec.add_runtime_dependency 'virtus', '~> 1.0', '>= 1.0.5'
-  spec.add_runtime_dependency 'rom', '~> 0.7', '>= 0.7'
-  spec.add_runtime_dependency 'rom-sql', '~> 0.5', '>= 0.5'
-  spec.add_runtime_dependency 'sqlite3', '~> 1.3', '>= 1.3.10'
-  spec.add_runtime_dependency 'activesupport', '~> 4.2', '>= 4.2.1'
+  spec.add_runtime_dependency 'curses', '~> 1.0.0', '>= 1.0.1'
+  spec.add_runtime_dependency 'virtus', '~> 1.0.0', '>= 1.0.5'
+  spec.add_runtime_dependency 'rom', '~> 0.9.1', '>= 0.9.1'
+  spec.add_runtime_dependency 'rom-sql', '~> 0.6.0', '>= 0.6'
+  spec.add_runtime_dependency 'sqlite3', '~> 1.3.10', '>= 1.3.10'
+  spec.add_runtime_dependency 'activesupport', '~> 4.2.4', '>= 4.2.4'
 
   spec.add_development_dependency "bundler", '~> 1'
-  spec.add_development_dependency "rake", "~> 10.4", '>= 10.4'
-  spec.add_development_dependency "rspec", '~> 3.2', '>= 3.2'
-  spec.add_development_dependency "timecop", '~> 0.7', '>= 0.7.3'
-  spec.add_development_dependency "pry", '~> 0.10', '>= 0.10'
-  spec.add_development_dependency "pry-byebug", '~> 3.1', '>= 3.1.0'
-  spec.add_development_dependency 'pry-stack_explorer', '~> 0.4.9'
+  spec.add_development_dependency "rake", "~> 10.4.2", '>= 10.4.2'
+  spec.add_development_dependency "rspec", '~> 3.2.0', '>= 3.2.0'
+  spec.add_development_dependency "timecop", '~> 0.7.3', '>= 0.7.3'
+  spec.add_development_dependency "pry", '~> 0.10.1', '>= 0.10.1'
+  spec.add_development_dependency "pry-byebug", '~> 3.1.0', '>= 3.1.0'
+  spec.add_development_dependency 'pry-stack_explorer', '~> 0.4.9.2', '>= 0.4.9.2'
 
   spec.licenses = ['MIT']
 end
