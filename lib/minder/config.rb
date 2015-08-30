@@ -5,7 +5,8 @@ module Minder
     DEFAULTS = {
       work_duration: 25,
       short_break_duration: 5,
-      long_break_duration: 15
+      long_break_duration: 15,
+      emoji: 'tomato'
     }
 
     attr_accessor :location

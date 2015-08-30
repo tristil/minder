@@ -11,7 +11,8 @@ module Minder
     attr_accessor :work_duration,
                   :short_break_duration,
                   :long_break_duration,
-                  :database
+                  :database,
+                  :emoji
 
     attr_reader :period_count,
                 :current_period
@@ -21,6 +22,7 @@ module Minder
       self.short_break_duration = options.fetch(:short_break_duration)
       self.long_break_duration = options.fetch(:long_break_duration)
       self.database = options.fetch(:database)
+      self.emoji = options.fetch(:emoji)
       @period_count = 0
       current_period = IdlePeriod.new
       current_period.start!

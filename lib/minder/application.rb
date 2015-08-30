@@ -38,7 +38,7 @@ module Minder
       self.scene = Scene.new
       scene.setup
 
-      options = { pomodoro_runner: pomodoro_runner, task_manager: task_manager  }
+      options = { pomodoro_runner: pomodoro_runner, task_manager: task_manager }
 
       self.pomodoro_frame = PomodoroFrame.new(options)
       self.help_frame = HelpFrame.new(options)
@@ -91,10 +91,14 @@ module Minder
     end
 
     def pomodoro_runner
+      require 'gemoji'
+      emoji = Emoji.find_by_alias(config.emoji).raw
+
       @runner ||= PomodoroRunner.new(
         work_duration: config.work_duration,
         short_break_duration: config.short_break_duration,
         long_break_duration: config.long_break_duration,
+        emoji: emoji,
         database: database)
     end
 

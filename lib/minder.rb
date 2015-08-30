@@ -1,7 +1,7 @@
 module Minder
   DEFAULT_WORK_PERIOD = 25
   DEFAULT_BREAK_PERIOD = 5
-  CONFIG_LOCATION = ENV['HOME'] + '/.minder.json'
+  CONFIG_LOCATION = File.join(ENV["HOME"], '.minder', 'config.json')
   ASSETS_LOCATION = File.expand_path(File.dirname(__FILE__) + '/../assets')
   DOING_FILE = File.join(ENV["HOME"], '.minder', 'doing.txt')
   DONE_FILE = File.join(ENV["HOME"], '.minder', 'done.txt')

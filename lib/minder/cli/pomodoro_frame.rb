@@ -52,7 +52,7 @@ TEXT
 
     def pomodoros
       pomodoro_runner.pomodoros_today.map do |pomodoro|
-        "\xF0\x9F\x8D\x85 "
+        pomodoro_runner.emoji
       end.join
     end
   end
