@@ -6,7 +6,8 @@ module Minder
       work_duration: 25,
       short_break_duration: 5,
       long_break_duration: 15,
-      emoji: 'tomato'
+      emoji: 'tomato',
+      database_name: 'database'
     }
 
     attr_accessor :location

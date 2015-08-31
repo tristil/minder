@@ -7,9 +7,9 @@ class Database
   attr_reader :rom
 
   def initialize
-    FileUtils.mkdir_p(File.dirname(Minder::DATABASE_LOCATION))
+    FileUtils.mkdir_p(File.dirname(Minder.database_location))
     ROM.use :auto_registration
-    ROM.setup(:sql, "sqlite://#{Minder::DATABASE_LOCATION}")
+    ROM.setup(:sql, "sqlite://#{Minder.database_location}")
 
     require 'minder/tasks/task'
     require 'minder/database/task_mapper'

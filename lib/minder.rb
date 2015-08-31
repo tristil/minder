@@ -6,7 +6,6 @@ module Minder
   DOING_FILE = File.join(ENV["HOME"], '.minder', 'doing.txt')
   DONE_FILE = File.join(ENV["HOME"], '.minder', 'done.txt')
   MIGRATIONS_PATH = File.expand_path(File.dirname(__FILE__) + '/../')
-  DATABASE_LOCATION = "#{ENV['HOME']}/.minder/database.sqlite3"
   LOG_LOCATION = "#{ENV['HOME']}/.minder/info.log"
 
   require 'minder/application'
@@ -15,6 +14,18 @@ module Minder
 
   require 'active_support'
   require 'fileutils'
+
+  def self.config
+    @config ||= begin
+                  config = Minder::Config.new(CONFIG_LOCATION)
+                  config.load
+                  config
+                end
+  end
+
+  def self.database_location
+    "#{ENV['HOME']}/.minder/#{config.database_name}.sqlite3"
+  end
 
   def self.formatted_time(seconds)
     minutes = (seconds / 60).to_i
