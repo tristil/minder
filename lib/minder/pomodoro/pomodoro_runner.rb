@@ -48,7 +48,6 @@ module Minder
     def continue
       return unless current_period.elapsed?
 
-      current_period.complete!
       complete_period(current_period)
 
       advance_period
@@ -58,6 +57,7 @@ module Minder
     end
 
     def complete_period(period)
+      period.complete!
       database.complete_period(period)
       @pomodoros_today = nil
     end
