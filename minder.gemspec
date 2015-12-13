@@ -25,6 +25,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'sqlite3', '~> 1.3.10', '>= 1.3.10'
   spec.add_runtime_dependency 'activesupport', '~> 4.2.4', '>= 4.2.4'
   spec.add_runtime_dependency 'gemoji', '~> 2.1.0', '>= 2.1.0'
+  spec.add_runtime_dependency 'rtasklib', '0.2.3'
 
   spec.add_development_dependency "bundler", '~> 1'
   spec.add_development_dependency "rake", "~> 10.4.2", '>= 10.4.2'

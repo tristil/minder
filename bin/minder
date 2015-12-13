@@ -1,15 +1,17 @@
 #!/usr/bin/env ruby
 
 require 'minder'
-require 'minder/database/database'
-database = Database.new
-DB = database.rom.gateways[:default]
+# require 'minder/database/database'
+# database = Database.new
+# DB = database.rom.gateways[:default]
 
 require 'minder/application'
-require 'minder/database/database_migrator'
+require 'minder/database/taskwarrior_database'
+database = Minder::TaskwarriorDatabase.new(task_dir: ENV['HOME'] + '/.task')
+# require 'minder/database/database_migrator'
 
-migrator = Minder::DatabaseMigrator.new(database: database)
-migrator.run
+# migrator = Minder::DatabaseMigrator.new(database: database)
+# migrator.run
 
 application = Minder::Application.new(database: database)
 application.run
